@@ -1,0 +1,119 @@
+export class Lobby {
+
+  constructor(client, container) {
+    this.client = client;
+
+    this.div = document.createElement('div');
+    this.div.classList.add('lobby');
+    container.append(this.div);
+
+    this.roomListContainer = document.createElement('div');
+    this.buttonsContainer = document.createElement('div');
+    this.roomListContainer.classList.add('room-list-container');
+    this.buttonsContainer.classList.add('buttons-container');
+
+    this.buttonRoomCreate = document.createElement('button');
+    this.buttonRoomCreate.innerText = 'create room';
+    this.buttonsContainer.append(this.buttonRoomCreate);
+    this.buttonRoomCreate.addEventListener('click', () => {
+      this.createRoom();
+    })
+
+    this.div.append(this.roomListContainer);
+    this.div.append(this.buttonsContainer);
+
+    this.roomList = new RoomList(client, this.roomListContainer);
+
+    client.onRoomJoinReject = (roomID, responseCode) => {
+      alert('Room Join Rejected! ' + roomID + ', code = ', responseCode);
+    }
+  }
+
+  createRoom() {
+    const title = prompt('Title?');
+    const capacity = +prompt('Capacity?')
+    this.client.requestRoomCreate(title, capacity);
+  }
+
+  dispose() {
+    this.div.remove();
+  }
+
+}
+
+class RoomList {
+
+  constructor(client, container) {
+    this.client = client;
+    this.div = document.createElement('div');
+    this.div.classList.add('room-list');
+    container.append(this.div);
+    this.rooms = [];
+
+    client.onRoomList = (rooms) => {
+      this.clear();
+      rooms.forEach(room => {
+        this.addRoom(room.id, room.title, room.noOfPlayers, room.capacity);
+      })
+    }
+
+    client.requestRoomList();
+  }
+
+  clear() {
+    this.rooms.forEach(room => room.dispose());
+    this.rooms = [];
+  }
+
+  addRoom(id, title, currentPlayerNo, capacity) {
+    const room = new Room(this.client, this.div, id, title, currentPlayerNo, capacity);
+    this.rooms.push(room);
+  }
+
+  getRoomByID(id) {
+    for (let i = 0; i < this.rooms.length; i ++) {
+      if (this.rooms[i].id == id) return this.rooms[i];
+    }
+  }
+
+}
+
+class Room {
+
+  constructor(client, container, id, title, currentPlayerNo, capacity) {
+    this.client = client;
+    this.id = id;
+    this.title = title;
+    this.currentPlayerNo = currentPlayerNo;
+    this.capacity = capacity;
+
+    this.div = document.createElement('div');
+    this.div.classList.add('room');
+    container.append(this.div);
+    
+    this.idContainer = document.createElement('div');
+    this.titleContainer = document.createElement('div');
+    this.capacityContainer = document.createElement('div');
+
+    this.idContainer.classList.add('id');
+    this.titleContainer.classList.add('title');
+    this.capacityContainer.classList.add('capacity');
+
+    this.idContainer.innerText = id;
+    this.titleContainer.innerText = title;
+    this.capacityContainer = currentPlayerNo + '/' + capacity;
+
+    this.div.append(this.idContainer);
+    this.div.append(this.titleContainer);
+    this.div.append(this.capacityContainer);
+
+    this.div.addEventListener('dblclick', () => {
+      this.client.requestRoomJoin(this.id);
+    });
+  }
+  
+  dispose() {
+    this.div.remove();
+  }
+
+}

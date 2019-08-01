@@ -1,0 +1,27 @@
+#landing {
+}
+
+#landing .title-container {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#landing .title-container  .title {
+  display: inline-block;
+  margin: 0 15px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 35px;
+}
+
+#landing .title-container .title.cops {
+}
+
+#landing .title-container  .title.and {
+}
+
+#landing .title-container  .title.robbers {
+}
