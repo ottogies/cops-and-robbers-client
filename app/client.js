@@ -15,7 +15,7 @@ export class Client extends AbstractClient {
     }
 
     connect() {
-        this.socket = new WebSocket('ws://localhost:4343');
+        this.socket = new WebSocket('ws://localhost:12370');
         this.socket.onopen = this.onConnect;
 
         this.socket.onmessage = (e) => {
