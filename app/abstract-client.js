@@ -20,14 +20,19 @@ export class AbstractClient {
 
         /** InGame protocols **/
         this.onGameStart = (gameID) => {}
+        this.onRoleSelect = (playerID, role) => {}
         this.onCreateGame = (gameId) => {}
+        this.onGameMapDataStart = () => {}
         this.onCreateVertex = (vertexId, x, y) => {}
         this.onCreateEdge = (v1Id, v2Id) => {}
+        this.onGameMapDataEnd = () => {}
         this.onCreatePlayer = (playerId, isLocal, type) => {}
         this.onCreateAgent = (playerId, agentId, role, vertexId) => {}
         this.onMoveAgent = (currentVertexId,playerId,agentId, vertexId) => {}
         this.onRequestAgentPlace = (playerId, numberOfAgents) => {}
-        this.onRequestAgentMove = (playerId, agentId) => {}
+        this.onAgentMoveTurn = (playerId, agentId) => {}
+        this.onAgentCaught = (playerId, agentId) => {}
+        this.onGameEnd = (role) => {}
     }
 
 
@@ -56,71 +61,13 @@ export class AbstractClient {
     }
 
 
-    onCreateGame(gameId) {
-        this.game = new Game(this);
-    } 
+    /** Game requests **/
+    requestRoleSelect(gameID, role) {
 
-    onCreateVertex(vertexId, x, y) {
-        this.game.createVertex(vertexId, x, y);
-    }
-
-    onCreateEdge(v1Id, v2Id) {
-        this.game.createEdge(v1Id,v2Id);
-    }
-
-    onCreatePlayer(playerId, isLocal, type) {
-        this.game.createPlayer(playerId, isLocal, type);
-    }
-
-    onCreateAgent(playerId, agentId, role, vertexId) {
-        this.game.createAgent(playerId, agentId, role, vertexId);        
-    }
-
-    onMoveAgent(currentVertexId,playerId,agentId, vertexId) {
-        this.game.moveAgent(currentVertexId, playerId, agentId, vertexId);
     }
     
-    onRequestAgentPlace(playerId, numberOfAgents) {
-        this.game.requestPlaceAgent(playerId, numberOfAgents)
-    }
-    
-    onRequestAgentMove(playerId, agentId) {
-        this.game.requestMoveAgent(playerId, agentId);
-    }
+    requestAgentMove(gameID, agentId, vertexId) {
 
-    /** 
-     * @param {Array.<{playerId: number, agentId: number, vertexId: number}>} message  
-     */  
-    responseAgentPlace(message) {
-        /*
-        [{
-            playerId: number,
-            agentId: number,
-            vertexId: number
-        }, {
-            playerId: number,
-            agentId: number,
-            vertexId: number
-        }, {
-            playerId: number,
-            agentId: number,
-            vertexId: number
-        }]
-        */
-    }
-
-    /** 
-     * @param {Object} message
-     * @param {number} message.agentId
-     * @param {number} message.vertexId
-     */  
-    responseAgentMove(message) {
-
-        /*
-            agentId : number,
-            vertexId :number
-         */
-        
     }
 
 }

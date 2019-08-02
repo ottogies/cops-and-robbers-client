@@ -93,9 +93,21 @@ export class Client extends AbstractClient {
             }
 
 
+            /** Ingame protocol **/
             else if(type == "game_create"){
                 var game_id = +tokens[1];
                 this.onCreateGame(game_id);
+            }
+            else if(type == "role_select"){
+                var player_id = +tokens[1];
+                var role = tokens[2];
+                this.onRoleSelect(player_id, role);
+            }
+            else if(type == "game_map_data_start") {
+                this.onGameMapDataStart();
+            }
+            else if(type == "game_map_data_end") {
+                this.onGameMapDataEnd();
             }
             else if(type == "vertex_create"){
                 var vertex_id = +tokens[1];
@@ -122,10 +134,10 @@ export class Client extends AbstractClient {
                 var vertex_id = +tokens[4];
                 this.onCreateAgent(player_id,agent_id,role,vertex_id);
             }
-            else if(type == "request_agent_move"){
+            else if(type == "agent_move_turn"){
                 var player_id = +tokens[1];
                 var agent_id = +tokens[2];
-                this.onRequestAgentMove(player_id,agent_id);
+                this.onAgentMoveTurn(player_id,agent_id);
             }
             else if(type == "agent_move"){
                 var player_id = +tokens[1];
@@ -133,6 +145,15 @@ export class Client extends AbstractClient {
                 var vertex_id = +tokens[3];
                 var last_vertex_id = +tokens[4];
                 this.onMoveAgent(last_vertex_id, player_id,agent_id,vertex_id)
+            }
+            else if(type == "agent_caught") {
+                var player_id = +tokens[1];
+                var agent_id = +tokens[2];
+                this.onAgentCaught(player_id, agent_id);
+            }
+            else if(type == "game_end") {
+                var role = token[1];
+                this.onGameEnd(role);
             }
         }
     }
@@ -177,19 +198,13 @@ export class Client extends AbstractClient {
     }
 
 
-
-    responseAgentPlace(message) {
-    
+    /** Game requests **/
+    requestRoleSelect(gameID, role) {
+        this.socket.send(['request_game_role_select', gameID, role].join(','));
     }
 
-    responseAgentMove(message) {
-        var playerId = message.playerId;
-        var agentId = message.agentId;
-        var vertexId = message.vertexId;
-        
-        this.socket.send(
-            'request_agent_move,'+playerId+','+agentId+','+vertexId);
-        
+    requestAgentMove(gameID, agentId, vertexId) {
+        this.socket.send(['request_agent_move',gameID,agentId,vertexId].join(','));
     }
 
 }

@@ -33,7 +33,7 @@ export class App {
       if (this.lobby) this.lobby.dispose();
       if (this.room) this.room.dispose();
       alert('Game started!');
-      this.game = new Game(this.client, this.div);
+      this.game = new Game(this.client, this.div, gameID);
     }
 
     this.client.connect();

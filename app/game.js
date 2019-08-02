@@ -4,13 +4,21 @@ import { Player } from "./player.js";
 import { AbstractClient } from "./abstract-client.js";
 import { Cop } from "./cop.js";
 import { Robber } from "./robber.js";
+import { RoleSelect } from "./role-select.js";
+
+/**
+ * git add *
+ * git commit -m "message"
+ * git push
+ */
 
 export class Game {
 
   /** 
    * @param {AbstractClient} client  
    */  
-  constructor(client, container) {
+  constructor(client, container, id) {
+    this.id = id;
     this.client = client;
     this.vertices = [];
     this.players = [];
@@ -21,6 +29,56 @@ export class Game {
     this.ingameContainer = document.createElement('div');
     this.div.append(this.ingameContainer);
 
+    this.roleSelector = new RoleSelect(client, this.div, this);
+    this.client.onGameMapDataStart = () => {
+      this.roleSelector.dispose();
+    }
+
+    //html 정적으로 생성한거 동적으로 여기다 옮겨 적기 
+    //css에서 재정의 해야댐
+    
+    this.wapper = document.createElement('wapper');
+    this.wapper.className = "wapper";
+    this.wapper.innerText = "wapper";
+    document.body.append(this.wapper);
+
+    this.header = document.createElement('header');
+    this.header.className = "header";
+    this.header.innerText = "header";
+    document.body.append(this.header);
+    
+    this.aside = document.createElement('aside');
+    this.aside.className = "aside";
+    this.aside.innerText = "aside";
+    document.body.append(this.aside);
+
+    this.footer  = document.createElement('footer');
+    this.footer.className = "footer";
+    this.footer.innerText = "footer";
+    document.body.append(this.footer);
+    
+  //   <center><div class = "s1">Cops and Robber</div> </center>
+
+  // <div id="wapper">
+
+  //     <header>
+  //         <p>header</p>
+  //     </header>
+
+
+  //     <section id= "section">
+  //         <p>section</p>
+  //         <div id = "game"></div>
+  //     </section>
+
+  //     <aside>
+  //       <p>information</p>
+  //     </aside>
+    
+
+  //     <footer>footer</footer>
+  // </div>
+
     this.client.onCreateVertex = (vertexId, x, y) => {
       this.createVertex(vertexId, x, y);
     }
@@ -28,20 +86,26 @@ export class Game {
       this.createEdge(v1Id,v2Id);
     }
     this.client.onCreatePlayer = (playerId, isLocal, type) => {
-        this.game.createPlayer(playerId, isLocal, type);
+        this.createPlayer(playerId, isLocal, type);
     }
     this.client.onCreateAgent = (playerId, agentId, role, vertexId) => {
-        this.game.createAgent(playerId, agentId, role, vertexId);        
+        this.createAgent(playerId, agentId, role, vertexId);        
     }
     this.client.onMoveAgent = (currentVertexId,playerId,agentId, vertexId) => {
-        this.game.moveAgent(currentVertexId, playerId, agentId, vertexId);
+        this.moveAgent(currentVertexId, playerId, agentId, vertexId);
     }
     this.client.onRequestAgentPlace = (playerId, numberOfAgents) => {
-        this.game.requestPlaceAgent(playerId, numberOfAgents)
+        this.requestPlaceAgent(playerId, numberOfAgents)
     }
-    this.client.onRequestAgentMove = (playerId, agentId) => {
-        this.game.requestMoveAgent(playerId, agentId);
+    this.client.onAgentMoveTurn = (playerId, agentId) => {
+      if (this.client.id != playerId) return;
+      this.agentMoveTurn(playerId, agentId);
     }
+    // TODO
+    // this.client.onAgentCaught = (playerId, agentId) => {
+    //   implement..
+    // }
+    // this.client.onGameEnd = 
 
   }
 
@@ -88,15 +152,11 @@ export class Game {
     player.requestPlaceAgent(noOfAgents);
   }
 
-  requestMoveAgent(playerId,agentId) {
+  agentMoveTurn(playerId,agentId) {
     const player = this.getPlayerById(playerId);
     var requestPromise = player.requestMoveAgent(agentId);
     requestPromise.then(result => {
-      this.client.responseAgentMove({
-        playerId: playerId,
-        agentId: agentId,
-        vertexId: result.id
-      })
+      this.client.requestAgentMove(this.id, agentId, result.id);
     });
   }
 

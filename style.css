@@ -3,7 +3,7 @@
 
 }
 
-body  {
+.body  {
   background-image: url("paper.gif");
   background-color: #cccccc;
   text-align: center;
@@ -11,36 +11,37 @@ body  {
   width: 900px;
 }
 
-div#wapper {
+.wapper {
   width: 100%;
   text-align: left;
   min-height: 300px;
   margin: 0 auto;
 }
-header, footer, aside, section {
+.header, footer, aside, section {
   border: 1px solid rgb(153, 153, 153);
   margin: 5px;
   padding: 10px;
 }
-header {
+.header {
   height: 50px;
   background-color: red;
 }
-section, aside {
+.section, aside {
   float: left;
   /* height: 400px; */
 }
 
-section {
+.section {
   background-color: goldenrod;
   width: 604px;
 }
 
-aside {
+.aside {
   background-color: wheat;
   width: 230px;
 }
-footer {
+
+.footer {
   height: 100px;
   background-color: blue;
   position: relatiev;
