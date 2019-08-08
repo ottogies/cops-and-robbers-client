@@ -26,7 +26,7 @@ export class Lobby {
     refreshButton.innerText = '새로고침';
     this.topContainer.append(refreshButton);
     refreshButton.addEventListener('click', () => {
-
+      this.roomList.refresh();
     });
 
     this.div.append(this.topContainer);
@@ -88,7 +88,7 @@ class RoomList {
   }
 
   refresh() {
-    client.requestRoomList();
+    this.client.requestRoomList();
   }
 
 }
