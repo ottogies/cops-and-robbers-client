@@ -12,20 +12,24 @@
 }
 
 .wapper {
+  background-image: url("paper.gif");
   width: 100%;
   text-align: left;
   min-height: 300px;
   margin: 0 auto;
 }
-.header, footer, aside, section {
-  border: 1px solid rgb(153, 153, 153);
-  margin: 5px;
-  padding: 10px;
-}
+
 .header {
   height: 50px;
   background-color: red;
 }
+
+.header, aside, footer, section {
+  border: 1px solid rgb(153, 153, 153);
+  margin: 5px;
+  padding: 10px;
+}
+
 .section, aside {
   float: left;
   /* height: 400px; */
@@ -53,7 +57,6 @@
   animation-duration: 4s;
   animation-name : caught;
   z-index: 15;
-  
 }
 
 

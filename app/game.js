@@ -36,26 +36,36 @@ export class Game {
 
     //html 정적으로 생성한거 동적으로 여기다 옮겨 적기 
     //css에서 재정의 해야댐
+    //container 에 넣기
     
     this.wapper = document.createElement('wapper');
     this.wapper.className = "wapper";
     this.wapper.innerText = "wapper";
-    document.body.append(this.wapper);
+    this.div.append(this.wapper);
 
     this.header = document.createElement('header');
     this.header.className = "header";
     this.header.innerText = "header";
-    document.body.append(this.header);
+    this.wapper.append(this.header);
+    // document.body.append(this.header);
     
     this.aside = document.createElement('aside');
     this.aside.className = "aside";
     this.aside.innerText = "aside";
-    document.body.append(this.aside);
+    this.wapper.append(this.aside);
+    // document.body.append(this.aside);
+    
 
     this.footer  = document.createElement('footer');
     this.footer.className = "footer";
     this.footer.innerText = "footer";
-    document.body.append(this.footer);
+    this.wapper.append(this.footer);
+
+    this.section = document.createElement("section");
+    this.section.className = "section";
+    this.section.innerText = "section";
+    this.wapper.append(this.section);
+    // document.body.append(this.footer);
     
   //   <center><div class = "s1">Cops and Robber</div> </center>
 
@@ -101,6 +111,15 @@ export class Game {
       if (this.client.id != playerId) return;
       this.agentMoveTurn(playerId, agentId);
     }
+
+    // 이 밑에꺼 고쳐
+    // this.client.onAgentCaught = (playerId, agentId) => {
+
+    // }
+    // this.client.onGameEnd() = (role) => {
+
+    // }
+
     // TODO
     // this.client.onAgentCaught = (playerId, agentId) => {
     //   implement..

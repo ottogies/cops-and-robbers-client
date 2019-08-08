@@ -15,7 +15,13 @@ export class Client extends AbstractClient {
     }
 
     connect() {
-        this.socket = new WebSocket('ws://localhost:12370');
+
+        if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+            this.socket = new WebSocket('ws://localhost:12370');
+        }
+        else {
+            this.socket = new WebSocket('ws://164.125.34.209:12370');
+        }
         this.socket.onopen = this.onConnect;
 
         this.socket.onmessage = (e) => {
