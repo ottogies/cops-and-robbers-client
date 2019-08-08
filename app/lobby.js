@@ -8,17 +8,28 @@ export class Lobby {
     container.append(this.div);
 
     this.roomListContainer = document.createElement('div');
-    this.buttonsContainer = document.createElement('div');
     this.roomListContainer.classList.add('room-list-container');
+    this.buttonsContainer = document.createElement('div');
     this.buttonsContainer.classList.add('buttons-container');
+    this.topContainer = document.createElement('div');
+    this.topContainer.classList.add('top-container');
 
-    this.buttonRoomCreate = document.createElement('button');
+    this.buttonRoomCreate = document.createElement('div');
     this.buttonRoomCreate.innerText = 'create room';
     this.buttonsContainer.append(this.buttonRoomCreate);
     this.buttonRoomCreate.addEventListener('click', () => {
       this.createRoom();
     })
 
+    const refreshButton = document.createElement('div');
+    refreshButton.classList.add('btn-refresh');
+    refreshButton.innerText = '새로고침';
+    this.topContainer.append(refreshButton);
+    refreshButton.addEventListener('click', () => {
+
+    });
+
+    this.div.append(this.topContainer);
     this.div.append(this.roomListContainer);
     this.div.append(this.buttonsContainer);
 
@@ -76,6 +87,10 @@ class RoomList {
     }
   }
 
+  refresh() {
+    client.requestRoomList();
+  }
+
 }
 
 class Room {
@@ -88,7 +103,7 @@ class Room {
     this.capacity = capacity;
 
     this.div = document.createElement('div');
-    this.div.classList.add('room');
+    this.div.classList.add('room-list-item');
     container.append(this.div);
     
     this.idContainer = document.createElement('div');
@@ -101,13 +116,13 @@ class Room {
 
     this.idContainer.innerText = id;
     this.titleContainer.innerText = title;
-    this.capacityContainer = currentPlayerNo + '/' + capacity;
+    this.capacityContainer.innerText = currentPlayerNo + '/' + capacity;
 
     this.div.append(this.idContainer);
     this.div.append(this.titleContainer);
     this.div.append(this.capacityContainer);
 
-    this.div.addEventListener('dblclick', () => {
+    this.div.addEventListener('click', () => {
       this.client.requestRoomJoin(this.id);
     });
   }
