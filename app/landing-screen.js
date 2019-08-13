@@ -1,6 +1,8 @@
 export class LandingScreen {
 
   constructor() {
+    this.onPlayButtonClick = () => {}
+
     this.div = document.createElement('div');
     this.div.id = 'landing';
 
@@ -14,12 +16,23 @@ export class LandingScreen {
     this.elCops.classList.add('title', 'cops');
     this.elAnd.classList.add('title', 'and');
     this.elRobbers.classList.add('title', 'robbers');
-    this.elCops.innerText = 'Cops';
-    this.elAnd.innerText = 'and';
-    this.elRobbers.innerText = 'Robbers';
+    this.elCops.innerHTML = '<img src="./res/cops.png">';
+    this.elAnd.innerHTML = '<img src="./res/and.png">';
+    this.elRobbers.innerHTML = '<img src="./res/robbers.png">';
     this.titleContainer.append(this.elCops);
     this.titleContainer.append(this.elAnd);
     this.titleContainer.append(this.elRobbers);
+
+    this.playButton = document.createElement('div');
+    this.playButton.classList.add('btn-play');
+    const playButtonContent = document.createElement('div');
+    playButtonContent.classList.add('btn-play-content');
+    this.playButton.append(playButtonContent);
+    playButtonContent.innerText = 'PLAY!';
+
+    this.div.append(this.playButton);
+
+    this.bindEvents();
   }
 
   show(parent) {
@@ -29,10 +42,34 @@ export class LandingScreen {
       translateX: [-50, 0],
       translateY: [-50, 0],
       opacity: [0, 1],
-      delay: anime.stagger(300),
+      delay: anime.stagger(400),
       duration: 900,
       direction: 'forwards',
     });
+    anime({
+      targets: [this.playButton],
+      translateY: [-50, 0],
+      opacity: [0, 1],
+      delay: 1300,
+      duration: 1000
+    })
+  }
+
+  bindEvents() {
+    this.playButton.addEventListener('click', () => {
+      anime({
+        targets: [this.div],
+        opacity: [1, 0],
+        translateY: [0, -20],
+        duration: 300,
+        easing: 'linear'
+      })
+      setTimeout(() => this.onPlayButtonClick(), 300);
+    })
+  }
+
+  dispose() {
+    this.div.remove();
   }
 
 }

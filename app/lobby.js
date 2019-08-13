@@ -38,6 +38,14 @@ export class Lobby {
     client.onRoomJoinReject = (roomID, responseCode) => {
       alert('Room Join Rejected! ' + roomID + ', code = ', responseCode);
     }
+
+    anime({
+      targets: [this.div],
+      opacity: [0, 1],
+      translateY: [-20, 0],
+      duration: 300,
+      easing: 'linear'
+    });
   }
 
   createRoom() {

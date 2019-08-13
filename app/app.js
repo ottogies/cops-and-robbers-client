@@ -9,13 +9,16 @@ export class App {
   constructor() {
     this.client = new Client();
 
+    this.landingScreen = new LandingScreen();
+
     this.div = document.createElement('div');
     this.div.id = 'app';
     document.body.append(this.div);
+    
 
     this.client.onConnect = () => {
       console.log('connected!');
-      this.lobby = new Lobby(this.client, this.div);
+      this.showLandingScreen();
     }
 
     this.client.onRoomJoinAccept = (roomID, title, capacity) => {
@@ -42,6 +45,14 @@ export class App {
 
   showLandingScreen() {
     this.landingScreen.show(this.div)
+    this.landingScreen.onPlayButtonClick = () => {
+      this.landingScreen.dispose();
+      this.createLobby();
+    }
+  }
+
+  createLobby() {
+    this.lobby = new Lobby(this.client, this.div);
   }
 
   createRoom(roomId) {

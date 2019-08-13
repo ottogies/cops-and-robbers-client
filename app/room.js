@@ -103,7 +103,7 @@ class RoomPlayerList {
       content.classList.add('content');
       roomPlayerContainer.append(content);
       this.div.append(roomPlayerContainer);
-      this.playerContainers.splice(0, 0, roomPlayerContainer);
+      this.playerContainers.splice(0, 0, content);
     }
   }
 
