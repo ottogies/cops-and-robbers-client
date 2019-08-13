@@ -1,8 +1,13 @@
 .room {
   display: flex;
+  position: relative;
   width: 100%;
   height: 100%;
   flex-direction: column;
+  border: 3px solid #81a3df;
+  box-sizing: border-box;
+  background: #f0f5fd;
+  border-radius: 10px;
 }
 
 .room .part-container > * {
@@ -13,7 +18,6 @@
 .room .title-part-container {
   display: flex;
   align-items: center;
-  flex-basis: 50px;
 }
 
 .room .list-part-container {
@@ -24,7 +28,14 @@
 .room .menu-part-container {
   display: flex;
   flex-basis: 50px;
-  background: purple;
+}
+
+.room .title-part {
+  line-height: 30px;
+  font-size: 13px;
+  background: #81a3df;
+  color: white;
+  padding-left: 15px;
 }
 
 .room .title-part .title {
@@ -38,17 +49,27 @@
 
 .room .player-list .player-container {
   width: 25%;
-  height: 50%;
+  height: 100%;
   float: left;
   box-sizing: border-box;
-  padding: 10px;
+  padding: 5px;
 }
 
 .room .player-list .player-container .content {
   width: 100%;
   height: 100%;
-  border: 1px solid black;
   box-sizing: border-box;
+  border: 2px solid #2c6aa0;
+  border-bottom: 8px solid #2c6aa0;
+  border-radius: 5px;
+}
+
+.room .player-list .player-container .content .player {
+  background: #2c6aa0;
+  color: white;
+  padding-left: 5px;
+  font-size: 13px;
+  line-height: 30px;
 }
 
 .room .menu-part {
@@ -65,5 +86,15 @@
 .room .menu-part .button-container > * {
   width: 100%;
   height: 100%;
-  border: 1px solid black;
+  box-sizing: border-box;
+  border-radius: 5px;
+  background: #2c6aa0;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.room .menu-part .button-container > .button-leave {
+  background: #2ca07b;
 }
