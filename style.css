@@ -3,59 +3,101 @@
 body {
   font-family: 'Noto Sans KR', sans-serif;
 }
-
+#app{
+  width: 100%;
+  height: 100%;
+}
 #game {
   position: relative;
 
 }
 
-.body  {
+.ingame  {
+  width: 100%;
+  height: 100%;
+  font-family: 'NanumBarunGothic', 돋움;
   background-image: url("paper.gif");
+  background-repeat: repeat;
   background-color: #cccccc;
   text-align: center;
-  color: #FFF;
-  width: 900px;
+  color: #FFF;  
+  display : flex;
+  flex-direction: column;
+  flex-shrink: inherit;
+  border-radius: 5px;
+
 }
 
-.wapper {
-  background-image: url("paper.gif");
+
+.ingameContainer{
+  box-sizing : border-box;
+  display :flex ; 
+  flex-direction: row;
+  border: 3px solid darkgoldenrod;
+  flex: 1;
   width: 100%;
-  text-align: left;
-  min-height: 300px;
-  margin: 0 auto;
 }
 
 .header {
-  height: 50px;
-  background-color: red;
+  border-radius: 5px;
+ 
+  background-color: teal;
+  border: 3px solid darkgoldenrod;
+  flex-basis: 40px; 
 }
 
-.header, aside, footer, section {
-  border: 1px solid rgb(153, 153, 153);
-  margin: 5px;
-  padding: 10px;
+.headertext {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: x-large;
+  color: chartreuse;
+  
+
 }
 
-.section, aside {
-  float: left;
-  /* height: 400px; */
-}
 
 .section {
-  background-color: goldenrod;
-  width: 604px;
+  flex: 1;
+  border-radius: 5px;
+  box-sizing : border-box;
+  position: relative;
+
+  /* border: 3px solid darkgoldenrod; */
+  padding: 5px;
+  /* margin: 3px; */
+  
 }
 
 .aside {
-  background-color: wheat;
-  width: 230px;
+  background-color: maroon;
+  box-sizing : border-box;
+  /* display :flex ; */
+  width : 200px;
+  height: 100%;
+  border: 3px solid darkgoldenrod;
+  padding: 5px;
+  border-radius: 5px;
+  
+/*   
+  margin: 3px;
+  height : 500px;
+  width : 300px;
+  background-color: wheat; */
+
 }
 
+
+
+
+
 .footer {
-  height: 100px;
-  background-color: blue;
-  position: relatiev;
-  clear: both;
+  background-color: gray;
+  /* flex : 1; */
+  border-radius: 5px;
+  bottom:0;
+  width:100%;
+  height:70px;   
+  /* position: relative;
+  clear: both; */
 }
 
 .caughtstyle{
@@ -78,7 +120,7 @@ body {
   margin-left: -10px;
   margin-top: -10px;
   box-sizing: border-box;
-  background: rgb(255, 0, 106);
+  background: rgb(0, 120, 175);
   transform: scale(0);
   z-index: 7;
   transition: 0.2s background;
@@ -89,7 +131,8 @@ body {
 }
 
 .vertex.highlight {
-  background: rgb(0, 120, 175);
+  
+  background: rgb(255, 0, 106);
 }
 
 .vertex.highlight:hover {

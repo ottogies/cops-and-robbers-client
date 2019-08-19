@@ -24,9 +24,28 @@ export class Game {
     this.players = [];
 
     this.div = document.createElement('div');
+    this.div.classList.add('ingame');
+    // ingame 크기랑 ingamecontainer크기랑 전부 변할수 있나? 
     container.append(this.div);
 
+    
+    this.header = document.createElement('header');
+    this.header.className = "header";
+    this.header.classList.add('header');
+    this.div.append(this.header);
+
+    this.headertext = document.createElement('headertext');
+    this.headertext.className = "headertext";
+    this.headertext.classList.add('headertext');
+    this.headertext.innerText = "Cops and Robbers!";
+    this.header.append(this.headertext);
+
+
+    //헤더는 어차피 고정된 값
+
     this.ingameContainer = document.createElement('div');
+    this.ingameContainer.classList.add('ingameContainer');
+   // this.ingameContainer.style.width 
     this.div.append(this.ingameContainer);
 
     this.roleSelector = new RoleSelect(client, this.div, this);
@@ -36,59 +55,44 @@ export class Game {
 
     //html 정적으로 생성한거 동적으로 여기다 옮겨 적기 
     //css에서 재정의 해야댐
-    //container 에 넣기
-    
-    this.wapper = document.createElement('wapper');
-    this.wapper.className = "wapper";
-    this.wapper.innerText = "wapper";
-    this.div.append(this.wapper);
+    //container 에 넣기 div에 다 넣으면됨 
+    //flex를 이용해서
 
-    this.header = document.createElement('header');
-    this.header.className = "header";
-    this.header.innerText = "header";
-    this.wapper.append(this.header);
-    // document.body.append(this.header);
+
+    // this.headertext = document.createElement('div');
+    // this.headertext.className = "headertext";
+    // this.headertext.classList.add(this.headertext);
+    // this.headertext.innerText ="cops and robbers!"
+    // this.header.append(this.headertext);
+
+    this.section = document.createElement("section");
+    this.section.id = "section";
+    this.section.className = "section";
+    this.section.innerText = "section";
+    this.section.classList.add('section');
+    this.ingameContainer.append(this.section);
+    //게임 나올곳 
     
     this.aside = document.createElement('aside');
     this.aside.className = "aside";
     this.aside.innerText = "aside";
-    this.wapper.append(this.aside);
-    // document.body.append(this.aside);
-    
+    this.aside.classList.add('aside');
+    this.ingameContainer.append(this.aside);
+    // 변화에 따른 
 
     this.footer  = document.createElement('footer');
     this.footer.className = "footer";
     this.footer.innerText = "footer";
-    this.wapper.append(this.footer);
+    this.footer.classList.add('footer');
+    this.div.append(this.footer);
+    
+    //이것도 고정된 값
 
-    this.section = document.createElement("section");
-    this.section.className = "section";
-    this.section.innerText = "section";
-    this.wapper.append(this.section);
+
+    // 그래프 크기에 따라 section크기에 대해 vertex 크기를 조절해야댐
+
     // document.body.append(this.footer);
     
-  //   <center><div class = "s1">Cops and Robber</div> </center>
-
-  // <div id="wapper">
-
-  //     <header>
-  //         <p>header</p>
-  //     </header>
-
-
-  //     <section id= "section">
-  //         <p>section</p>
-  //         <div id = "game"></div>
-  //     </section>
-
-  //     <aside>
-  //       <p>information</p>
-  //     </aside>
-    
-
-  //     <footer>footer</footer>
-  // </div>
-
     this.client.onCreateVertex = (vertexId, x, y) => {
       this.createVertex(vertexId, x, y);
     }
@@ -129,6 +133,7 @@ export class Game {
   }
 
   sizeofMap(){
+    console.log(3);
     var xMin = Infinity;
     var xMax = -Infinity;
     var yMin = Infinity;
@@ -149,13 +154,16 @@ export class Game {
         }
         
     }
-
-    let width = xMax - xMin;
-    let height = yMax - yMin;
+    
+    let width = xMax - xMin ;
+    let height = yMax - yMin ;
     this.div = document.getElementById("section");
-    this.div.style.width = width + "px";
-    this.div.style.height = height + "px";
+    
+    this.div.style.width =   width + "px";
+    this.div.style.height =  height + "px";  
+    // 이게 맞는건가 ? 지금 크기를 하나도 못받아옴
 
+    
      // 여기서 외곽 x,y 좌표 구했고  받을걸로 외곽구역을 그리고 
      // vertex의 크기 조절 해야대나?---> 안해도 될듯?
   }
@@ -185,7 +193,7 @@ export class Game {
   }
 
   createVertex(id, x, y) {
-    let vertex = new Vertex(this.ingameContainer, id, x, y);
+    let vertex = new Vertex(this.section, id, x, y);
     this.vertices.push(vertex);
     this.sizeofMap()
   }
@@ -194,7 +202,7 @@ export class Game {
     var v1 = this.getVertexById(v1Id);
     var v2 = this.getVertexById(v2Id);
     console.log(v1,v2);
-    var edge = v1.addEdge(this.ingameContainer, v2);
+    var edge = v1.addEdge(this.section, v2);
     console.log(edge);
 
   }
@@ -204,10 +212,10 @@ export class Game {
     var player = this.getPlayerById(playerId);
     var vertex = this.getVertexById(vertexId);
     if (role == 'cop') {
-      agent = new Cop(this.ingameContainer, agentId, vertex);
+      agent = new Cop(this.section, agentId, vertex);
     }
     else {
-      agent = new Robber(this.ingameContainer, agentId, vertex);
+      agent = new Robber(this.section, agentId, vertex);
     }
     player.addAgent(agent);
   }

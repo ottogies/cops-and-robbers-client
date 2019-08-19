@@ -5,6 +5,8 @@ export class RoleSelect {
     this.div = document.createElement('div');
     this.div.classList.add('role-select');
 
+    this.div.style.position = 'absolute';
+
     this.copSelect = new RoleSelectButton(this.div, 'cop', 'Cop');
     this.robberSelect = new RoleSelectButton(this.div, 'robber', 'Robber');
 
