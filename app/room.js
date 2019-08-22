@@ -167,12 +167,12 @@ class MenuPart {
 
     this.startButton = document.createElement('div');
     this.startButton.classList.add('button-start');
-    this.startButton.innerText = 'Start'
+    this.startButton.innerText = '게임 시작'
     startButtonContainer.append(this.startButton);
 
     this.leaveButton = document.createElement('div');
     this.leaveButton.classList.add('button-leave');
-    this.leaveButton.innerText = 'Leave'
+    this.leaveButton.innerText = '나가기'
     leaveButtonContainer.append(this.leaveButton);
 
     this.div.append(startButtonContainer);

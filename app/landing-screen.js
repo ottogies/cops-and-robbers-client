@@ -30,7 +30,15 @@ export class LandingScreen {
     this.playButton.append(playButtonContent);
     playButtonContent.innerText = 'PLAY!';
 
+    const footer = document.createElement('div');
+    footer.classList.add('sfooter');
+    footer.innerHTML = `
+      <div style='font-weight: bold'>Team 오뚜기</div>
+      <div>정보컴퓨터공학부 2019년도 전기 졸업과제</div>
+    `
+
     this.div.append(this.playButton);
+    this.div.append(footer);
 
     this.bindEvents();
   }

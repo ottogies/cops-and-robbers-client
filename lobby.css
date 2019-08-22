@@ -13,7 +13,7 @@
 }
 
 .lobby .top-container {
-  flex-basis: 30px;
+  flex-basis: 60px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -21,12 +21,12 @@
 
 .lobby .top-container .btn-refresh {
   cursor: pointer;
-  font-size: 12px;
+  font-size: 20px;
   background: #4d92d0;
   color: white;
   padding: 0 10px;
   border-radius: 5px;
-  line-height: 20px;
+  line-height: 50px;
   transition: .3s;
 }
 
@@ -50,7 +50,25 @@
   height: 100%;
   overflow: auto;
   box-sizing: border-box;
-  padding: 5px;
+}
+
+.lobby .room-list .room-list-header {
+  display: flex;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.lobby .room-list .room-list-header .no {
+  flex-basis: 50px;
+  text-align: center;
+}
+
+.lobby .room-list .room-list-header .title {
+  flex: 1;
+}
+
+.lobby .room-list .room-list-header .capacity {
+  flex-basis: 50px;
 }
 
 .lobby .room-list .room-list-item {
@@ -58,22 +76,25 @@
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
-  padding: 5px;
-  border: 1px solid #3c699f;
+  padding: 10px;
+  border-top: 1px solid #3c699f;
   background: white;
-  border-radius: 4px;
   color: #3c6596;
-  font-size: 12px;
+  font-size: 18px;
   transition: .3s;
   margin-bottom: 5px;
 }
 
+.lobby .room-list .room-list-item:last-child {
+  border-bottom: 1px solid #3c699f;
+}
+
 .lobby .room-list .room-list-item .id {
-  flex-basis: 24px;
+  flex-basis: 50px;
   text-align: center;
   background: #1c0576;
   color: white;
-  border-radius: 16px;
+  border-radius: 5px;
   transition: .3s;
 }
 
@@ -84,9 +105,8 @@
 }
 
 .lobby .room-list .room-list-item .capacity {
-  flex-basis: 30px;
+  flex-basis: 50px;
   box-sizing: border-box;
-  text-align: center;
 }
 
 .lobby .room-list .room-list-item:hover {
@@ -101,7 +121,7 @@
 
 .lobby .buttons-container {
   display: flex;
-  flex-basis: 30px;
+  flex-basis: 60px;
 }
 
 .lobby .buttons-container > div {
@@ -109,7 +129,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 12px;
+  font-size: 25px;
   background: #4d92d0;
   border-radius: 7px;
   color: white;

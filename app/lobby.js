@@ -15,7 +15,7 @@ export class Lobby {
     this.topContainer.classList.add('top-container');
 
     this.buttonRoomCreate = document.createElement('div');
-    this.buttonRoomCreate.innerText = 'create room';
+    this.buttonRoomCreate.innerText = '방 만들기';
     this.buttonsContainer.append(this.buttonRoomCreate);
     this.buttonRoomCreate.addEventListener('click', () => {
       this.createRoom();
@@ -68,6 +68,15 @@ class RoomList {
     this.div.classList.add('room-list');
     container.append(this.div);
     this.rooms = [];
+
+    const top = document.createElement('div');
+    top.classList.add('room-list-header');
+    top.innerHTML = `
+      <div class='no'>번호</div>
+      <div class='title'>방 제목</div>
+      <div class='capacity'>인원</div>
+    `
+    this.div.append(top);
 
     client.onRoomList = (rooms) => {
       this.clear();
