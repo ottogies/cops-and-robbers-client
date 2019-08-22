@@ -49,8 +49,8 @@ export class Lobby {
   }
 
   createRoom() {
-    const title = prompt('Title?');
-    const capacity = +prompt('Capacity?')
+    const title = prompt('방 제목은 무엇으로 할까요?');
+    const capacity = +prompt('게임 최대 인원은 몇 명 인가요? (2 ~ 4)')
     this.client.requestRoomCreate(title, capacity);
   }
 

@@ -48,8 +48,8 @@
 
 #landing .sfooter {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  text-align: right;
   font-size: 20px;
+  bottom: 150px;
+  width: 100%;
+  text-align: center;
 }

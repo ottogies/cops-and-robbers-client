@@ -12,12 +12,18 @@ import { RoleSelect } from "./role-select.js";
  * git push
  */
 
+ //그래프 크기 조절 할줄 알아야댐
+ //해야할것 section 하위객체 하나 둬서 그안에 그래프 그리게
+ //잡혔을때 애니메이션 
+
 export class Game {
 
   /** 
    * @param {AbstractClient} client  
    */  
   constructor(client, container, id) {
+    window.game = this;
+
     this.id = id;
     this.client = client;
     this.vertices = [];
@@ -64,14 +70,20 @@ export class Game {
     // this.headertext.classList.add(this.headertext);
     // this.headertext.innerText ="cops and robbers!"
     // this.header.append(this.headertext);
+    
 
     this.section = document.createElement("section");
     this.section.id = "section";
     this.section.className = "section";
-    this.section.innerText = "section";
     this.section.classList.add('section');
     this.ingameContainer.append(this.section);
-    //게임 나올곳 
+    
+    //게임 나올곳
+    this.map = document.createElement("div");
+    this.map.id = "map";
+    this.map.className = "map";
+    this.map.classList.add("map");
+    this.section.append(this.map); 
     
     this.aside = document.createElement('aside');
     this.aside.className = "aside";
@@ -92,6 +104,7 @@ export class Game {
     // 그래프 크기에 따라 section크기에 대해 vertex 크기를 조절해야댐
 
     // document.body.append(this.footer);
+
     
     this.client.onCreateVertex = (vertexId, x, y) => {
       this.createVertex(vertexId, x, y);
@@ -115,14 +128,12 @@ export class Game {
       if (this.client.id != playerId) return;
       this.agentMoveTurn(playerId, agentId);
     }
-
-    // 이 밑에꺼 고쳐
-    // this.client.onAgentCaught = (playerId, agentId) => {
-
-    // }
-    // this.client.onGameEnd() = (role) => {
-
-    // }
+    this.client.onAgentCaught = (playerId, agentId) => {
+      this.caughtRobber(playerId, agentId);
+    }
+    this.client.onGameEnd = (role) => {
+      this.gameEnd(role);
+    }
 
     // TODO
     // this.client.onAgentCaught = (playerId, agentId) => {
@@ -131,9 +142,9 @@ export class Game {
     // this.client.onGameEnd = 
 
   }
-
+   
+  //여기서 map의 크기를 section과 비율을 통해 해야댐
   sizeofMap(){
-    console.log(3);
     var xMin = Infinity;
     var xMax = -Infinity;
     var yMin = Infinity;
@@ -155,17 +166,51 @@ export class Game {
         
     }
     
-    let width = xMax - xMin ;
-    let height = yMax - yMin ;
-    this.div = document.getElementById("section");
     
-    this.div.style.width =   width + "px";
-    this.div.style.height =  height + "px";  
-    // 이게 맞는건가 ? 지금 크기를 하나도 못받아옴
+    let mapwidth = xMax - xMin ;
+    let mapheight = yMax - yMin ;
+
+    this.section = document.getElementById('section');
+    let sectionwidth =  this.section.offsetWidth - 80; 
+    let sectionheight = this.section.offsetHeight - 80; 
+
+    let rwidth = sectionwidth/mapwidth ; 
+    let rheight = sectionheight/mapheight;
+
+    let ratio = Math.min(rwidth, rheight);
+
+    this.map.style.transform = 'scale(' + ratio + ')';
+
+    const scaledMapWidth = mapwidth * ratio;
+    const scaledMapHeight = mapheight * ratio;
+
+    const paddingWidth = this.section.offsetWidth - scaledMapWidth;
+    const paddingHeight = this.section.offsetHeight - scaledMapHeight;
+
+    this.map.style.left = (paddingWidth / 2) + 'px';
+    this.map.style.top = (paddingHeight / 2) + 'px';
+
+    // this.div = document.getElementById("map");
+
+   //여기서 결정하면 안됨
+    
+    // this.div = document.getElementById("section");
+    
+    // this.div.style.width =   width + "px";
+    // this.div.style.height =  height + "px";  
+
+    this.map.style.width =   mapwidth + "px";
+    this.map.style.height =  mapheight + "px"; 
+  
+    if(sectionwidth < mapwidth){
+  
+     
+    }
+    else if(sectionwidth > mapwidth){
+
+    }
 
     
-     // 여기서 외곽 x,y 좌표 구했고  받을걸로 외곽구역을 그리고 
-     // vertex의 크기 조절 해야대나?---> 안해도 될듯?
   }
     
   
@@ -193,7 +238,7 @@ export class Game {
   }
 
   createVertex(id, x, y) {
-    let vertex = new Vertex(this.section, id, x, y);
+    let vertex = new Vertex(this.map, id, x, y);
     this.vertices.push(vertex);
     this.sizeofMap()
   }
@@ -202,7 +247,7 @@ export class Game {
     var v1 = this.getVertexById(v1Id);
     var v2 = this.getVertexById(v2Id);
     console.log(v1,v2);
-    var edge = v1.addEdge(this.section, v2);
+    var edge = v1.addEdge(this.map, v2);
     console.log(edge);
 
   }
@@ -212,10 +257,10 @@ export class Game {
     var player = this.getPlayerById(playerId);
     var vertex = this.getVertexById(vertexId);
     if (role == 'cop') {
-      agent = new Cop(this.section, agentId, vertex);
+      agent = new Cop(this.map, agentId, vertex);
     }
     else {
-      agent = new Robber(this.section, agentId, vertex);
+      agent = new Robber(this.map, agentId, vertex);
     }
     player.addAgent(agent);
   }
@@ -245,20 +290,23 @@ export class Game {
 
    }
 
-  caughtRobber(copId, robberId) {
-    var cop = this.getAgentById(copId);
+  caughtRobber(playerId, robberId) {
+    // var cop = this.getAgentById(copId);
     var robber = this.getAgentById(robberId);
-    console.log(cop,robber);
 
-    const textDiv = document.createElement('div');
-    textDiv.classList.add("caughtstyle");
-    textDiv.innerHTML = "<span><b><font color='blue' , size ='10'>Caught!</font></b></span>";
-    
+    const caughtstyle = document.createElement('div');
+    caughtstyle.classList.add("caughtstyle");
+    this.div.append(caughtstyle);
 
-    document.getElementById('game').append(textDiv);
+    const caughttext = document.createElement("div");
+    caughttext.classList.add("caughttext");
+    caughttext.innerText = 'You have caught!';
+    this.div.append(cauhgttext);
+
+    // document.getElementById('game').append(textDiv);
     setTimeout(() => {
-      textDiv.remove();
-    }, 2000)
+      caughtstyle.remove();
+    }, 5000)
 
     const robberPlayer = this.getPlayerByAgent(robber);
     robberPlayer.removeAgent(robber);

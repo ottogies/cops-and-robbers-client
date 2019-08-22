@@ -158,7 +158,7 @@ export class Client extends AbstractClient {
                 this.onAgentCaught(player_id, agent_id);
             }
             else if(type == "game_end") {
-                var role = token[1];
+                var role = tokens[1];
                 this.onGameEnd(role);
             }
         }
