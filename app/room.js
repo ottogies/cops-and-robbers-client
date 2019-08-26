@@ -1,3 +1,5 @@
+import { NumberPicker } from "./number-picker.js";
+
 export class Room {
 
   constructor(client, container, id, title, capacity) {
@@ -15,16 +17,21 @@ export class Room {
 
     const listPartContainer = document.createElement('div');
     listPartContainer.classList.add('part-container', 'list-part-container');
+    
+    const optionPartContainer = document.createElement('div');
+    optionPartContainer.classList.add('part-container', 'option-part-container');
 
     const menuPartContainer = document.createElement('div');
     menuPartContainer.classList.add('part-container', 'menu-part-container');
 
     this.div.append(titlePartContainer);
     this.div.append(listPartContainer);
+    this.div.append(optionPartContainer);
     this.div.append(menuPartContainer);
   
     this.titlePart = new TitlePart(titlePartContainer, this.title);
     this.roomPlayerList = new RoomPlayerList(this.client, listPartContainer);
+    this.optionPart = new OptionPart(this.client, optionPartContainer);
     this.menuPart = new MenuPart(this.client, menuPartContainer);
 
     this.menuPart.onRoomStartButtonClick = () => {
@@ -146,6 +153,92 @@ class RoomPlayer {
 
   dispose() {
     this.div.remove();
+  }
+
+}
+
+class OptionPart {
+
+  constructor(client, container) {
+    this.client = client;
+
+    this.div = document.createElement('div');
+    this.div.classList.add('option-part');
+    container.append(this.div);
+
+    const gridOption = document.createElement('div');
+    gridOption.classList.add('grid');
+    this.div.append(gridOption);
+    {
+      const ex = document.createElement('div');
+      ex.classList.add('opt-label');
+      ex.style.display = 'inline-block';
+      ex.innerText = '그리드 크기 ';
+      gridOption.append(ex);
+    }
+    this.gridXPicker = new NumberPicker(gridOption, 5, 3, 10);
+    {
+      const ex = document.createElement('div');
+      ex.style.display = 'inline-block';
+      ex.innerText = ' X ';
+      gridOption.append(ex);
+    }
+    this.gridYPicker = new NumberPicker(gridOption, 5, 3, 10);
+     
+    {
+      const _ = document.createElement('div');
+      _.classList.add('_');
+      this.div.append(_);
+      _.innerText = '_'
+    }
+
+    const copVisionOption = document.createElement('div');
+    copVisionOption.classList.add('cop-vision');
+    this.div.append(copVisionOption);
+    {
+      const ex = document.createElement('div');
+      ex.classList.add('opt-label');
+      ex.style.display = 'inline-block';
+      ex.innerText = '경찰 시야 제한';
+      copVisionOption.append(ex);
+    }
+    this.copVisionPicker = new NumberPicker(copVisionOption, 1, 0, 5);
+
+    const robberVisionOption = document.createElement('div');
+    robberVisionOption.classList.add('robber-vision');
+    this.div.append(robberVisionOption);
+    {
+      const ex = document.createElement('div');
+      ex.classList.add('opt-label');
+      ex.style.display = 'inline-block';
+      ex.innerText = '도둑 시야 제한';
+      robberVisionOption.append(ex);
+    }
+    this.robberVisionPicker = new NumberPicker(robberVisionOption, 1, 0, 5);
+
+    const copAgentNum = document.createElement('div');
+    copAgentNum.classList.add('cop-num');
+    this.div.append(copAgentNum);
+    {
+      const ex = document.createElement('div');
+      ex.classList.add('opt-label');
+      ex.style.display = 'inline-block';
+      ex.innerText = '인당 경찰 개수';
+      copAgentNum.append(ex);
+    }
+    this.copNumPicker = new NumberPicker(copAgentNum, 1, 0, 5);
+
+    const robberAgentNum = document.createElement('div');
+    robberAgentNum.classList.add('robber-num');
+    this.div.append(robberAgentNum);
+    {
+      const ex = document.createElement('div');
+      ex.classList.add('opt-label');
+      ex.style.display = 'inline-block';
+      ex.innerText = '인당 도둑 개수';
+      robberAgentNum.append(ex);
+    }
+    this.robberNumPicker = new NumberPicker(robberAgentNum, 1, 0, 5);
   }
 
 }

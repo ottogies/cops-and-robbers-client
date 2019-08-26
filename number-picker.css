@@ -1,0 +1,81 @@
+.number-picker {
+  display: inline-block;
+  position: relative;
+  width: 35px;
+  text-align: center;
+  z-index: 0;
+}
+
+.number-picker .np-overlay {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  transition: opacity .5s;
+  left: 3px;
+  top: -45px;
+  height: 115px;
+  width: 31px;
+  z-index: 5;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #8f9094;
+  box-sizing: border-box;
+}
+
+.number-picker .text {
+  position: relative;
+  z-index: 10;
+  font-size: 18px;
+}
+
+.number-picker:hover .np-overlay {
+  visibility: visible;
+  opacity: 1;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #8f9094;
+  box-sizing: border-box;
+}
+
+.number-picker .np-overlay:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.number-picker .np-increaser {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 10px 17.3px 10px;
+  border-color: transparent transparent #5360f2 transparent;
+}
+
+.number-picker .np-increaser:hover {
+  border-color: transparent transparent #451899 transparent;
+}
+
+.number-picker .np-decreaser {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 17.3px 10px 0 10px;
+  border-color: #5360f2 transparent transparent transparent;
+}
+
+.number-picker .np-decreaser:hover {
+  border-color: #451899 transparent transparent transparent;
+}
+
+.number-picker .np-btn {
+  transition: .3s;
+  cursor: pointer;
+}
+
+.number-picker .np-btn:hover {
+}
