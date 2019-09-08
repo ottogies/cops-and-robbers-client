@@ -1,0 +1,9 @@
+.chat {
+  overflow-y: scroll;
+  height: 100%;
+  text-align: left;
+}
+
+.chat .message {
+  margin: 4px 0;
+}

@@ -1,24 +1,24 @@
 .side-info .player {
   padding: 5px;
   box-sizing: border-box;
-  border: 2px solid white;
-  background: #7a7a7a;
+  border: 2px solid #828282;
   margin-bottom: 5px;
+  border-radius: 10px;
 }
 
 .side-info .agent {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 100%;
   background-size: 100%;
-  border: 2px solid white;
+  border: 2px solid #9a9a9a;
   box-sizing: border-box;
   display: inline-block;
   margin: 10px;
 }
 
 .side-info .agent.turn {
-  animation: blink-animation 1s infinite alternate;
+  animation: blink-animation .5s infinite alternate;
 }
 
 .side-info .agent.cop {
@@ -34,6 +34,6 @@
     opacity: 1;
   }
   to {
-    opacity: 0.6;
+    opacity: 0.2;
   }
 }

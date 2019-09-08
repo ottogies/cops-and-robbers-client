@@ -189,7 +189,7 @@ export class Client extends AbstractClient {
                 }
                 for (var i = 0; i < count; i ++) {
                     var vId = vertexWeights[i][0];
-                    var weight = vertexWeights[i][1] / maxWeight;
+                    var weight = vertexWeights[i][1] / 4;
                     this.onVertexWeight(vId, weight);
                 }
             }

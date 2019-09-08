@@ -6,6 +6,7 @@ import { Cop } from "./cop.js";
 import { Robber } from "./robber.js";
 import { RoleSelect } from "./role-select.js";
 import { SideInfo } from "./side-info.js";
+import { Chat } from "./chat.js";
 
 /**
  * git add *
@@ -45,7 +46,6 @@ export class Game {
     this.headertext = document.createElement('headertext');
     this.headertext.className = "headertext";
     this.headertext.classList.add('headertext');
-    this.headertext.innerText = "Cops and Robbers!";
     this.header.append(this.headertext);
 
 
@@ -93,14 +93,22 @@ export class Game {
     this.ingameContainer.append(this.aside);
     // 변화에 따른 
 
-    const si = new SideInfo(this.aside, this);
-    setInterval(() => si.update(), 2000);
+    const weightToggle = document.createElement('input');
+    weightToggle.setAttribute('type', 'checkbox');
+    weightToggle.addEventListener('change', e => {
+      this.toggleWeightMap(weightToggle.checked);
+    })
+    this.aside.append(weightToggle);
+
+    this.sideInfo = new SideInfo(this.aside, this);
+    this.sideInfo.update();
 
     this.footer  = document.createElement('footer');
     this.footer.className = "footer";
-    this.footer.innerText = "footer";
     this.footer.classList.add('footer');
     this.div.append(this.footer);
+
+    this.chat = new Chat(client, this.footer);
     
     //이것도 고정된 값
 
@@ -112,44 +120,56 @@ export class Game {
     
     this.client.onCreateVertex = (vertexId, x, y) => {
       this.createVertex(vertexId, x, y);
+      this.sideInfo.update();
     }
     this.client.onCreateEdge = (v1Id, v2Id) => {
       this.createEdge(v1Id,v2Id);
+      this.sideInfo.update();
     }
     this.client.onCreatePlayer = (playerId, username, isLocal, type) => {
-        this.createPlayer(playerId, username, isLocal, type);
+      this.createPlayer(playerId, username, isLocal, type);
+      this.sideInfo.update();
     }
     this.client.onCreateAgent = (playerId, agentId, role, vertexId) => {
-        this.createAgent(playerId, agentId, role, vertexId);        
+      this.createAgent(playerId, agentId, role, vertexId);        
+      this.sideInfo.update();
     }
     this.client.onMoveAgent = (currentVertexId,playerId,agentId, vertexId) => {
         this.moveAgent(currentVertexId, playerId, agentId, vertexId);
+      this.sideInfo.update();
     }
     this.client.onRequestAgentPlace = (playerId, numberOfAgents) => {
         this.requestPlaceAgent(playerId, numberOfAgents)
+      this.sideInfo.update();
     }
     this.client.onAgentMoveTurn = (playerId, agentId) => {
-      if (this.client.id != playerId) return;
       this.agentMoveTurn(playerId, agentId);
+      this.sideInfo.update();
     }
     this.client.onAgentCaught = (playerId, agentId) => {
       this.caughtRobber(playerId, agentId);
+      this.sideInfo.update();
     }
     this.client.onGameEnd = (role) => {
       this.gameEnd(role);
+      this.sideInfo.update();
     }
 
     this.client.onEdgeWeight = (v1Id, v2Id, weight) => {
       this.updateEdgeWeight(v1Id, v2Id, weight);
+      this.sideInfo.update();
     }
     this.client.onVertexWeight = (vId, weight) => {
       this.updateVertexWeight(vId, weight);
+      this.sideInfo.update();
     }
     this.client.onAgentEdgePath = (agentId, path) => {
       this.updateAgentEdgePath(agentId, path);
+      this.sideInfo.update();
     }
     this.client.onAgentVertexWeight = (agentId, vertices) => {
       this.updateAgentVertexWeight(agentId, vertices);
+      this.sideInfo.update();
     }
 
     // TODO
@@ -218,6 +238,9 @@ export class Game {
 
     this.map.style.width =   mapwidth + "px";
     this.map.style.height =  mapheight + "px"; 
+
+    this.width = mapwidth;
+    this.height = mapheight;
   
     if(sectionwidth < mapwidth){
   
@@ -245,6 +268,8 @@ export class Game {
     const player = this.getPlayerById(playerId);
     const agent = player.getAgentById(agentId);
     this.currentTurnAgent = agent;
+    this.chat.addMessage(`${player.username}님의 차례입니다.`);
+    if (this.client.id != playerId) return;
     var requestPromise = player.requestMoveAgent(agentId);
     requestPromise.then(result => {
       this.client.requestAgentMove(this.id, agentId, result.id);
@@ -320,13 +345,15 @@ export class Game {
 
     const caughttext = document.createElement("div");
     caughttext.classList.add("caughttext");
-    caughttext.innerText = 'You have caught!';
-    this.div.append(cauhgttext);
+    caughttext.innerText = 'Catch!';
+    this.div.append(caughttext);
 
     // document.getElementById('game').append(textDiv);
-    setTimeout(() => {
-      caughtstyle.remove();
-    }, 5000)
+    // setTimeout(() => {
+    //   caughtstyle.remove();
+    // }, 5000)
+
+
 
     const robberPlayer = this.getPlayerByAgent(robber);
     robberPlayer.removeAgent(robber);
@@ -405,6 +432,15 @@ export class Game {
     vertices = vertices.map(vId => this.getVertexById(vId));
     agent.setVertices(vertices);
   }
+
+  toggleWeightMap(value) {
+    this.vertices.forEach(v => {
+      v.toggleWeight(value);
+      v.edgeMap.forEach(e => e.toggleWeight(value));
+    })
+  }
+
+
 
 
 
