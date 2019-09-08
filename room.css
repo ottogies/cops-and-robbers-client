@@ -77,6 +77,19 @@
   line-height: 30px;
 }
 
+.room .player-list .player-container.disable .content {
+  background: grey;
+}
+
+/* .room .player-list .player-container.disable .content::after {
+  position: absolute;
+  content: '';
+  width: 50px;
+  height: 50px;
+  top: 0;
+  left: 0;
+} */
+
 .room .option-part {
   box-sizing: border-box;
   padding: 10px;

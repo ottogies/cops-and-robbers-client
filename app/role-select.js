@@ -7,8 +7,17 @@ export class RoleSelect {
 
     this.div.style.position = 'absolute';
 
-    this.copSelect = new RoleSelectButton(this.div, 'cop', 'Cop');
-    this.robberSelect = new RoleSelectButton(this.div, 'robber', 'Robber');
+    const textContainer = document.createElement('div');
+    textContainer.classList.add('text-container');
+    textContainer.innerText = '역할을 선택하세요';
+    this.div.append(textContainer);
+
+    const roleContainer = document.createElement('div');
+    roleContainer.classList.add('role-container');
+    this.div.append(roleContainer);
+
+    this.copSelect = new RoleSelectButton(roleContainer, 'cop', 'Cop');
+    this.robberSelect = new RoleSelectButton(roleContainer, 'robber', 'Robber');
 
     this.copSelect.onClick = () => {
       client.requestRoleSelect(game.id, 'cop');
@@ -41,10 +50,11 @@ class RoleSelectButton {
   constructor(container, role, label) {
     this.div = document.createElement('div');
     this.icon = document.createElement('div');
+    this.icon.classList.add('icon', role);
     this.label = document.createElement('div');
     this.countLabel = document.createElement('div');
-
-    this.label.innerText = label;
+    this.countLabel.classList.add('label', role);
+    this.div.classList.add('role', role);
 
     this.div.append(this.icon);
     this.div.append(this.label);

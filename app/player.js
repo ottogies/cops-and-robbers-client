@@ -15,8 +15,9 @@ export class Player {
      * @param  {Game} game [description]
      */
 
-    constructor(id, game) {
+    constructor(id, username, game) {
         this.id = id;
+        this.username = username;
         
         this.game = game;
         this.agents = [];  //이걸 구조체로 정의해서

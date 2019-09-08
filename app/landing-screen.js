@@ -1,6 +1,7 @@
 export class LandingScreen {
 
-  constructor() {
+  constructor(client) {
+    this.client = client;
     this.onPlayButtonClick = () => {}
 
     this.div = document.createElement('div');

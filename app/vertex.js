@@ -8,6 +8,7 @@ export class Vertex {
         this.y = y;
 
         this.edges = [];
+        this.edgeMap = new Map();
 
         this.div = document.createElement("div");
         this.div.setAttribute("type", "vertex");
@@ -23,8 +24,13 @@ export class Vertex {
     }
 
     addEdge(container, vertex) { 
-        new Edge(container, this.x,this.y,vertex.x,vertex.y);
+        const edge = new Edge(container, this.x,this.y,vertex.x,vertex.y);
         this.edges.push(vertex);
+        this.edgeMap.set(vertex.id, edge);
+    }
+
+    getEdge(dstVertexId) {
+        return this.edgeMap.get(+dstVertexId);
     }
 
     setColor(color) {
@@ -34,6 +40,10 @@ export class Vertex {
     setHighlight(value){
         if (value) this.div.classList.add('highlight');
         else this.div.classList.remove('highlight');
+    }
+
+    setWeight(value) {
+        this.div.style.background = `rgb(${125 + Math.round(value * 125)}, ${125 + Math.round(value * 125)}, ${125 + Math.round(value * 125)})`;
     }
 
 }

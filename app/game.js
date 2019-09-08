@@ -5,6 +5,7 @@ import { AbstractClient } from "./abstract-client.js";
 import { Cop } from "./cop.js";
 import { Robber } from "./robber.js";
 import { RoleSelect } from "./role-select.js";
+import { SideInfo } from "./side-info.js";
 
 /**
  * git add *
@@ -27,6 +28,7 @@ export class Game {
     this.id = id;
     this.client = client;
     this.vertices = [];
+    this.vertexMap = new Map();
     this.players = [];
 
     this.div = document.createElement('div');
@@ -87,10 +89,12 @@ export class Game {
     
     this.aside = document.createElement('aside');
     this.aside.className = "aside";
-    this.aside.innerText = "aside";
     this.aside.classList.add('aside');
     this.ingameContainer.append(this.aside);
     // 변화에 따른 
+
+    const si = new SideInfo(this.aside, this);
+    setInterval(() => si.update(), 2000);
 
     this.footer  = document.createElement('footer');
     this.footer.className = "footer";
@@ -112,8 +116,8 @@ export class Game {
     this.client.onCreateEdge = (v1Id, v2Id) => {
       this.createEdge(v1Id,v2Id);
     }
-    this.client.onCreatePlayer = (playerId, isLocal, type) => {
-        this.createPlayer(playerId, isLocal, type);
+    this.client.onCreatePlayer = (playerId, username, isLocal, type) => {
+        this.createPlayer(playerId, username, isLocal, type);
     }
     this.client.onCreateAgent = (playerId, agentId, role, vertexId) => {
         this.createAgent(playerId, agentId, role, vertexId);        
@@ -133,6 +137,19 @@ export class Game {
     }
     this.client.onGameEnd = (role) => {
       this.gameEnd(role);
+    }
+
+    this.client.onEdgeWeight = (v1Id, v2Id, weight) => {
+      this.updateEdgeWeight(v1Id, v2Id, weight);
+    }
+    this.client.onVertexWeight = (vId, weight) => {
+      this.updateVertexWeight(vId, weight);
+    }
+    this.client.onAgentEdgePath = (agentId, path) => {
+      this.updateAgentEdgePath(agentId, path);
+    }
+    this.client.onAgentVertexWeight = (agentId, vertices) => {
+      this.updateAgentVertexWeight(agentId, vertices);
     }
 
     // TODO
@@ -226,20 +243,23 @@ export class Game {
 
   agentMoveTurn(playerId,agentId) {
     const player = this.getPlayerById(playerId);
+    const agent = player.getAgentById(agentId);
+    this.currentTurnAgent = agent;
     var requestPromise = player.requestMoveAgent(agentId);
     requestPromise.then(result => {
       this.client.requestAgentMove(this.id, agentId, result.id);
     });
   }
 
-  createPlayer(id,isLocal,type) {
-    const player = new Player(id, this);
+  createPlayer(id,username,isLocal,type) {
+    const player = new Player(id, username, this);
     this.players.push(player);
   }
 
   createVertex(id, x, y) {
     let vertex = new Vertex(this.map, id, x, y);
     this.vertices.push(vertex);
+    this.vertexMap.set(id, vertex);
     this.sizeofMap()
   }
 
@@ -351,12 +371,39 @@ export class Game {
   }
 
   getVertexById(vertexId) {
+    return this.vertexMap.get(+vertexId);
     for (var i = 0; i < this.vertices.length; i ++) {
       
       var vertex = this.vertices[i];
       if (vertex.id == vertexId) return vertex;
     }
     return null;
+  }
+
+  updateEdgeWeight(v1Id, v2Id, weight) {
+    const v1 = this.getVertexById(v1Id);
+    const edge1 = v1.getEdge(v2Id);
+    const v2 = this.getVertexById(v2Id);
+    const edge2 = v2.getEdge(v1Id);
+    edge1.setWeight(weight);
+    edge2.setWeight(weight);
+  }
+
+  updateVertexWeight(vId, weight) {
+    const v = this.getVertexById(vId);
+    v.setWeight(weight);
+  }
+
+  updateAgentEdgePath(agentId, path) {
+    const agent = this.getAgentById(agentId);
+    path = path.map(vId => this.getVertexById(vId));
+    agent.setPath(path);
+  }
+
+  updateAgentVertexWeight(agentId, vertices) {
+    const agent = this.getAgentById(agentId);
+    vertices = vertices.map(vId => this.getVertexById(vId));
+    agent.setVertices(vertices);
   }
 
 

@@ -80,10 +80,11 @@ export class Client extends AbstractClient {
             /** Room protocol **/
             else if (type == 'room_player_join') {
                 const playerID = +tokens[1];
-                const index = +tokens[2];
-                const isLocal = !!+tokens[3];
-                const isSuper = !!+tokens[4];
-                this.onRoomPlayerJoin(playerID, index, isLocal, isSuper);
+                const username = tokens[2];
+                const index = +tokens[3];
+                const isLocal = !!+tokens[4];
+                const isSuper = !!+tokens[5];
+                this.onRoomPlayerJoin(playerID, username, index, isLocal, isSuper);
             }
             else if (type == 'room_player_leave') {
                 const playerID = +tokens[1];
@@ -129,9 +130,10 @@ export class Client extends AbstractClient {
             }
             else if(type == "player_create"){
                 var player_id = +tokens[1];
-                var islocal = +tokens[2];
-                var jobtype = +tokens[3];
-                this.onCreatePlayer(player_id, islocal, jobtype);
+                var username = tokens[2];
+                var islocal = +tokens[3];
+                var jobtype = +tokens[4];
+                this.onCreatePlayer(player_id, username, islocal, jobtype);
             }
             else if(type == "agent_create"){
                 var player_id = +tokens[1];
@@ -157,6 +159,60 @@ export class Client extends AbstractClient {
                 var agent_id = +tokens[2];
                 this.onAgentCaught(player_id, agent_id);
             }
+            else if(type == "edge_weight") {
+                var count = +tokens[1];
+                var edgeWeights = [];
+                var maxWeight = 0;
+                for (var i = 0; i < count; i ++) {
+                    var v1Id = +tokens[2 + i * 3];
+                    var v2Id = +tokens[2 + i * 3 + 1];
+                    var weight = +tokens[2 + i * 3 + 2];
+                    edgeWeights.push([v1Id, v2Id, weight]);
+                    maxWeight = Math.max(maxWeight, weight);
+                }
+                for (var i = 0; i < count; i ++) {
+                    var v1Id = edgeWeights[i][0];
+                    var v2Id = edgeWeights[i][1];
+                    var weight = edgeWeights[i][2] / maxWeight;
+                    this.onEdgeWeight(v1Id, v2Id, weight);
+                }
+            }
+            else if(type == "vertex_weight") {
+                var count = +tokens[1];
+                var vertexWeights = [];
+                var maxWeight = 0;
+                for (var i = 0; i < count; i ++) {
+                    var vId = +tokens[2 + i * 2];
+                    var weight = +tokens[2 + i * 2 + 1];
+                    vertexWeights.push([vId, weight]);
+                    maxWeight = Math.max(maxWeight, weight);
+                }
+                for (var i = 0; i < count; i ++) {
+                    var vId = vertexWeights[i][0];
+                    var weight = vertexWeights[i][1] / maxWeight;
+                    this.onVertexWeight(vId, weight);
+                }
+            }
+            else if(type == "agent_edge_weight") {
+                var agentId = +tokens[1];
+                var count = +tokens[2];
+                var path = []; 
+                for (var i = 0; i < count; i ++) {
+                    var vId = +tokens[3 + i];
+                    path.push(vId);
+                }
+                this.onAgentEdgePath(agentId, path);
+            }
+            else if(type == "agent_vertex_weight") {
+                var agentId = +tokens[1];
+                var count = +tokens[2];
+                var vertices = []; 
+                for (var i = 0; i < count; i ++) {
+                    var vId = +tokens[3 + i];
+                    vertices.push(vId);
+                }
+                this.onAgentVertexWeight(agentId, vertices);
+            }
             else if(type == "game_end") {
                 var role = tokens[1];
                 this.onGameEnd(role);
@@ -175,6 +231,10 @@ export class Client extends AbstractClient {
         };
     }
 
+
+    requestUsername(name) {
+        this.socket.send(['request_username', name].join(','));
+    }
 
     /** Lobby Protocols **/
 

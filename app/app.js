@@ -9,7 +9,7 @@ export class App {
   constructor() {
     this.client = new Client();
 
-    this.landingScreen = new LandingScreen();
+    this.landingScreen = new LandingScreen(this.client);
 
     this.div = document.createElement('div');
     this.div.id = 'app';
@@ -35,7 +35,6 @@ export class App {
       console.log(this.lobby, this.room);
       if (this.lobby) this.lobby.dispose();
       if (this.room) this.room.dispose();
-      alert('Game started!');
       this.game = new Game(this.client, this.div, gameID);
     }
 
@@ -46,6 +45,8 @@ export class App {
   showLandingScreen() {
     this.landingScreen.show(this.div)
     this.landingScreen.onPlayButtonClick = () => {
+      const username = prompt('당신의 닉네임은 무엇인가요?');
+      this.client.requestUsername(username);
       this.landingScreen.dispose();
       this.createLobby();
     }

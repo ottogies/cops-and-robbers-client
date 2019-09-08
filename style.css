@@ -89,15 +89,11 @@ body {
 }
 
 .aside {
-
-  background-color: maroon;
   box-sizing : border-box;
   /* display :flex ; */
   width : 200px;
   height: 100%;
-  border: 3px solid darkgoldenrod;
   padding: 5px;
-  border-radius: 5px;
   
 /*   
   margin: 3px;
@@ -156,20 +152,21 @@ body {
   transition: 0.2s background;
 }
 
+.vertex.h {
+  background : rgb(255, 65, 65) !important;
+}
+
 .vertex:hover {
   background: rgb(175, 0, 73);
   
 }
 
 .vertex.highlight {
-  
-  background: rgb(255, 0, 106);
+  background: rgb(255, 0, 106) !important;
 }
 
 .vertex.highlight:hover {
-  background: rgb(0, 153, 224);
- 
-  
+  background: rgb(0, 153, 224) !important;  
 }
 
 .vertex.animate {
@@ -192,10 +189,14 @@ body {
 
 .edge {
   position : absolute;
-  height : 1px;
+  height : 3px;
   background : yellow;
   border : yellow; 
   opacity: 0;
+}
+
+.edge.h {
+  background : rgb(240, 255, 0) !important;
 }
 
 .edge.animate {
@@ -214,32 +215,34 @@ body {
   }
 }
 
-.agent {
+.ingame .section .agent {
   transition: .5s;
   position :absolute;
-  width : 10px;
-  height : 10px;
+  width : 15px;
+  height : 15px;
   border-radius : 1000px; 
   transition: 1s width height;
 }
 
 
-.agent.cop {
-  background : rgb(122, 29, 29);
+.ingame .section .agent.cop {
+  background-image: url(./res/cop.png);
+  background-size: 100%;
 }
 
-.agent.robber {
-  background : rgb(112, 190, 66);
+.ingame .section .agent.robber {
+  background-image: url(./res/robber.png);
+  background-size: 100%;
 }
 
-.agent.active {
+.ingame .section .agent.active {
   animation-duration: 0.4s;
   animation-name: blinker;
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
 
-.agent.vanish {
+.ingame .section .agent.vanish {
   width: 50px;
   height: 50px;
 }
@@ -248,7 +251,7 @@ body {
 @keyframes blinker{
   from {opacity: 1.0; }
 
-  to{ opacity: 0.0;}
+  to{ opacity: 0.5;}
 }
 
 @keyframes caught{

@@ -20,7 +20,6 @@ export class Edge{
         var hdy = (y1+y2)/2;
         var hdx = (x1+x2)/2;
         
-        
         var angle = (Math.atan2(dy,dx)*180)/Math.PI;
 
         this.div.style.left = (x1+x2)/2 +"px";
@@ -43,5 +42,9 @@ export class Edge{
         } 
 
         this.div.classList.add('animate');
+    }
+
+    setWeight(value) {
+        this.div.style.background = `rgb(${Math.round(value * 255)}, ${Math.round(value * 255)}, ${Math.round(value * 255)})`;
     }
 }

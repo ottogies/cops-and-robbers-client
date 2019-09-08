@@ -1,0 +1,39 @@
+.side-info .player {
+  padding: 5px;
+  box-sizing: border-box;
+  border: 2px solid white;
+  background: #7a7a7a;
+  margin-bottom: 5px;
+}
+
+.side-info .agent {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-size: 100%;
+  border: 2px solid white;
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 10px;
+}
+
+.side-info .agent.turn {
+  animation: blink-animation 1s infinite alternate;
+}
+
+.side-info .agent.cop {
+  background-image: url('./res/cop.png');
+}
+
+.side-info .agent.robber {
+  background-image: url('./res/robber.png');
+}
+
+@keyframes blink-animation {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+  }
+}

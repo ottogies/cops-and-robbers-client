@@ -1,0 +1,49 @@
+.role-select {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.role-select .text-container {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.role-select .role {
+  display: inline-block;
+  margin: 20px;
+}
+
+.role-select .icon {
+  width: 150px;
+  height: 150px;
+  background-size: 100%;
+  border: 3px solid white;
+  border-radius: 100%;
+  opacity: 0.5;
+  transition: .3s;
+  cursor: pointer;
+}
+.role-select .icon:hover {
+  opacity: 1;
+}
+.role-select .role.active .icon {
+  opacity: 1;
+}
+
+.role-select .icon.cop {
+  background-image: url(./res/cop.png);
+}
+.role-select .icon.robber {
+  background-image: url(./res/robber.png);
+}
+
+.role-select .label {
+  margin-top: 10px;
+  background: white;
+  line-height: 30px;
+  font-weight: bold;
+  color: #545454;
+  border-radius: 10px;
+}

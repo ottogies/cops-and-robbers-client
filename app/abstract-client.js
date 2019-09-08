@@ -14,7 +14,7 @@ export class AbstractClient {
         this.onRoomJoinAccept = (roomID, title, capacity) => {}
 
         /** Room protocols **/
-        this.onRoomPlayerJoin = (playerId, index, isLocal, isSuper) => {}
+        this.onRoomPlayerJoin = (playerId, username, index, isLocal, isSuper) => {}
         this.onRoomPlayerLeave = (playerID) => {}
         this.onRoomDestroy = (roomID) => {}
 
@@ -26,15 +26,25 @@ export class AbstractClient {
         this.onCreateVertex = (vertexId, x, y) => {}
         this.onCreateEdge = (v1Id, v2Id) => {}
         this.onGameMapDataEnd = () => {}
-        this.onCreatePlayer = (playerId, isLocal, type) => {}
+        this.onCreatePlayer = (playerId, username, isLocal, type) => {}
         this.onCreateAgent = (playerId, agentId, role, vertexId) => {}
         this.onMoveAgent = (currentVertexId,playerId,agentId, vertexId) => {}
         this.onRequestAgentPlace = (playerId, numberOfAgents) => {}
         this.onAgentMoveTurn = (playerId, agentId) => {}
         this.onAgentCaught = (playerId, agentId) => {}
         this.onGameEnd = (role) => {}
+
+        this.onEdgeWeight = (v1Id, v2Id, weight) => {}
+        this.onVertexWeight = (vId, weight) => {}
+
+        this.onAgentEdgePath = (agentId, path) => {}
+        this.onAgentVertexWeight = (agentId, vertices) => {}
     }
 
+
+    requestUsername(name) {
+
+    }
 
     /** Lobby Requests **/
     requestRoomList() {

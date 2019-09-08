@@ -30,7 +30,7 @@ export class Room {
     this.div.append(menuPartContainer);
   
     this.titlePart = new TitlePart(titlePartContainer, this.title);
-    this.roomPlayerList = new RoomPlayerList(this.client, listPartContainer);
+    this.roomPlayerList = new RoomPlayerList(this.client, listPartContainer, capacity);
     this.optionPart = new OptionPart(this.client, optionPartContainer);
     this.menuPart = new MenuPart(this.client, menuPartContainer);
 
@@ -86,8 +86,9 @@ class TitlePart {
 
 class RoomPlayerList {
   
-  constructor(client, container) {
+  constructor(client, container, capacity) {
     this.client = client;
+    this.capacity = capacity;
 
     this.div = document.createElement('div');
     this.div.classList.add('list-part');
@@ -97,8 +98,8 @@ class RoomPlayerList {
     this.playerContainers = [];
     this.initialize();
 
-    this.client.onRoomPlayerJoin = (playerId, index, isLocal, isSuper) => {
-      this.addPlayer(playerId, isSuper, index);
+    this.client.onRoomPlayerJoin = (playerId, username, index, isLocal, isSuper) => {
+      this.addPlayer(playerId, username, isSuper, index);
     }
   }
 
@@ -110,14 +111,18 @@ class RoomPlayerList {
       content.classList.add('content');
       roomPlayerContainer.append(content);
       this.div.append(roomPlayerContainer);
-      this.playerContainers.splice(0, 0, content);
+      roomPlayerContainer.setAttribute('index', i);
+      this.playerContainers.push(content);
+      if (this.capacity <= i) {
+        roomPlayerContainer.classList.add('disable');
+      }
     }
   }
 
-  addPlayer(playerId, isSuper, index) {
+  addPlayer(playerId, username, isSuper, index) {
     const roomPlayerContainer = this.playerContainers[index];
     console.warn('add Player', playerId, isSuper, index);
-    const roomPlayer = new RoomPlayer(roomPlayerContainer, playerId, isSuper);
+    const roomPlayer = new RoomPlayer(roomPlayerContainer, playerId, username, isSuper);
     this.players.splice(index, 0, roomPlayer);
   }
 
@@ -142,12 +147,13 @@ class RoomPlayerList {
 
 class RoomPlayer {
 
-  constructor(container, playerId, isSuper) {
+  constructor(container, playerId, username, isSuper) {
     this.id = playerId;
+    this.username = username;
     this.isSuper = isSuper;
     this.div = document.createElement('div');
     this.div.classList.add('player');
-    this.div.innerText = playerId;
+    this.div.innerText = username;
     container.append(this.div);
   }
 

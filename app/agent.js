@@ -4,7 +4,8 @@ export class Agent {
 
     constructor(container, id, role, vertex){
         this.id = id;
-        this.vertex = vertex; 
+        this.role = role;
+        this.vertex = vertex;
         
         this.div = document.createElement("div");
         this.div.setAttribute("type", "agent");
@@ -44,6 +45,32 @@ export class Agent {
         }
         else {
             this.div.classList.remove('active');
+        }
+    }
+
+    setPath(path) {
+        console.log(this,path);
+        this.path = path;
+    }
+
+    setVertices(vertices) {
+        console.log(this,vertices);
+        this.vertices = vertices;
+    }
+
+    highlightPath() {
+        if (this.path) {
+            for (var i = 2; i < this.path.length; i ++) {
+                const v1 = this.path[i - 1];
+                const v2 = this.path[i];
+                const e1 = v1.getEdge(v2.id);
+                const e2 = v2.getEdge(v1.id);
+                e1.div.classList.add('h');
+                e2.div.classList.add('h');
+            }
+        }
+        if (this.vertices) {
+            this.vertices.forEach(v => v.div.classList.add('h'));
         }
     }
 
