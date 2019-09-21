@@ -130,6 +130,9 @@ export class Game {
       this.createPlayer(playerId, username, isLocal, type);
       this.sideInfo.update();
     }
+    this.client.onGameRoleData = () => {
+      this.client.requestMapData(this.id);
+    }
     this.client.onCreateAgent = (playerId, agentId, role, vertexId) => {
       this.createAgent(playerId, agentId, role, vertexId);        
       this.sideInfo.update();

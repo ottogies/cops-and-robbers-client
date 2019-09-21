@@ -135,6 +135,9 @@ export class Client extends AbstractClient {
                 var jobtype = +tokens[4];
                 this.onCreatePlayer(player_id, username, islocal, jobtype);
             }
+            else if(type == "game_role_data"){
+                this.onGameRoleData();
+            }
             else if(type == "agent_create"){
                 var player_id = +tokens[1];
                 var agent_id  = +tokens[2];
@@ -267,6 +270,10 @@ export class Client extends AbstractClient {
     /** Game requests **/
     requestRoleSelect(gameID, role) {
         this.socket.send(['request_game_role_select', gameID, role].join(','));
+    }
+
+    requestMapData(gameID) {
+        this.socket.send(['request_map_data', gameID].join(','));
     }
 
     requestAgentMove(gameID, agentId, vertexId) {
