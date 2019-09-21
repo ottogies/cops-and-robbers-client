@@ -259,8 +259,8 @@ export class Client extends AbstractClient {
 
 
     /** Room requests **/
-    requestGameStart(roomID) {
-        this.socket.send(['request_game_start', roomID].join(','));
+    requestGameStart(roomID, gridX, gridY, noOfCops, noOfRobbers) {
+        this.socket.send(['request_game_start', roomID, gridX, gridY, noOfCops, noOfRobbers].join(','));
     }
 
 

@@ -10,7 +10,6 @@ export class SideInfo {
   update() {
     this.div.innerHTML = '';
     const playersContainer = document.createElement('div');
-    console.log(this.game.players);
     this.game.players.forEach(player => {
       const uPlayer = new Player(playersContainer, this.game, player);
     })
@@ -56,6 +55,14 @@ class Agent {
       })
       agent.highlightPath();
     })
+
+    const icon = document.createElement('div');
+    icon.classList.add('icon');
+    this.div.append(icon);
+    const label = document.createElement('div');
+    label.classList.add('label');
+    this.div.append(label);
+    label.innerText = 'Agent';
   }
 
   setTurn(value) {

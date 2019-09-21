@@ -103,7 +103,7 @@ export class Game {
     this.sideInfo = new SideInfo(this.aside, this);
     this.sideInfo.update();
 
-    this.footer  = document.createElement('footer');
+    this.footer = document.createElement('footer');
     this.footer.className = "footer";
     this.footer.classList.add('footer');
     this.div.append(this.footer);
@@ -267,7 +267,11 @@ export class Game {
   agentMoveTurn(playerId,agentId) {
     const player = this.getPlayerById(playerId);
     const agent = player.getAgentById(agentId);
+    if (this.currentTurnAgent) {
+      this.currentTurnAgent.position.setTurn(false);
+    }
     this.currentTurnAgent = agent;
+    if (this.currentTurnAgent) this.currentTurnAgent.position.setTurn(true);
     this.chat.addMessage(`${player.username}님의 차례입니다.`);
     if (this.client.id != playerId) return;
     var requestPromise = player.requestMoveAgent(agentId);

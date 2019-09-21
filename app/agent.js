@@ -21,6 +21,12 @@ export class Agent {
         this.div.style.zIndex = "10";
        
         this.setPosition(vertex);
+
+        const label = document.createElement('div');
+        label.classList.add('label');
+        label.innerText = 'Agent';
+
+        this.div.append(label);
         
    }
 
@@ -33,10 +39,11 @@ export class Agent {
     // }
 
     setPosition (vertex) {
+        if (this.position) this.position.removeAgent(this);
         this.position = vertex;
         this.div.style.left = vertex.x + "px";
         this.div.style.top = vertex.y + "px";
-        
+        vertex.addAgent(this);
     }
 
     setActive(value) {

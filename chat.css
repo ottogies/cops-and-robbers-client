@@ -1,9 +1,32 @@
 .chat {
-  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   text-align: left;
 }
 
 .chat .message {
   margin: 4px 0;
+}
+
+.chat .message-container {
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.chat .input-container {
+  flex-basis: 30px;
+  display: flex;
+}
+
+.chat .input {
+  flex: 1;
+}
+
+.chat .enter {
+  flex-basis: 100px;
+  background: #6d6d6d;
+  color: white;
+  text-align: center;
+  line-height: 30px;
 }

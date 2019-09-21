@@ -39,4 +39,14 @@ export class NumberPicker {
     this.valueText.innerText = this.value;
   }
 
+  setMax(value) {
+    this.maxValue = value;
+    this.setValue(this.value);
+  }
+
+  setMin(value) {
+    this.minValue = value;
+    this.setValue(this.value);
+  }
+
 }

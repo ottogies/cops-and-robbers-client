@@ -35,7 +35,11 @@ export class Room {
     this.menuPart = new MenuPart(this.client, menuPartContainer);
 
     this.menuPart.onRoomStartButtonClick = () => {
-      this.client.requestGameStart(this.id);
+      const gridX = this.optionPart.gridXPicker.value;
+      const gridY = this.optionPart.gridYPicker.value;
+      const noOfRobbers = this.optionPart.noOfRobberPicker.value;
+      const noOfCops = this.roomPlayerList.players.length - noOfRobbers;
+      this.client.requestGameStart(this.id, gridX, gridY, noOfCops, noOfRobbers);
     }
 
     this.menuPart.onRoomLeaveButtonClick = () => {
@@ -46,6 +50,11 @@ export class Room {
       console.warn('onRoomPlayerLeave',playerID, this.client.id);
       if (playerID == this.client.id) return this.onRoomLeave();
       this.roomPlayerList.removePlayer(playerID);
+      this.optionPart.noOfRobberPicker.setMax(Math.max(1, this.roomPlayerList.players.length - 1));
+    }
+
+    this.client.onRoomPlayerJoin = (playerId, username, index, isLocal, isSuper) => {
+      this.addPlayer(playerId, username, isSuper, index);
     }
     
     this.onRoomLeave = () => {}
@@ -55,8 +64,9 @@ export class Room {
 
   }
 
-  addPlayer(playerId, isSuper, index) {
-    this.roomPlayerList.addPlayer(playerId, isSuper, index);
+  addPlayer(playerId, username, isSuper, index) {
+    this.roomPlayerList.addPlayer(playerId, username, isSuper, index);
+    this.optionPart.noOfRobberPicker.setMax(Math.max(1, this.roomPlayerList.players.length - 1));
   }
 
   getPlayer(playerId) {
@@ -97,10 +107,6 @@ class RoomPlayerList {
     this.players = [];
     this.playerContainers = [];
     this.initialize();
-
-    this.client.onRoomPlayerJoin = (playerId, username, index, isLocal, isSuper) => {
-      this.addPlayer(playerId, username, isSuper, index);
-    }
   }
 
   initialize() {
@@ -222,6 +228,7 @@ class OptionPart {
     }
     this.robberVisionPicker = new NumberPicker(robberVisionOption, 1, 0, 5);
 
+
     const copAgentNum = document.createElement('div');
     copAgentNum.classList.add('cop-num');
     this.div.append(copAgentNum);
@@ -229,22 +236,23 @@ class OptionPart {
       const ex = document.createElement('div');
       ex.classList.add('opt-label');
       ex.style.display = 'inline-block';
-      ex.innerText = '인당 경찰 개수';
+      ex.innerText = '도둑의 수';
       copAgentNum.append(ex);
     }
-    this.copNumPicker = new NumberPicker(copAgentNum, 1, 0, 5);
+    this.noOfRobberPicker = new NumberPicker(copAgentNum, 1, 1, 1);
+    // this.copNumPicker = new NumberPicker(copAgentNum, 1, 0, 5);
 
-    const robberAgentNum = document.createElement('div');
-    robberAgentNum.classList.add('robber-num');
-    this.div.append(robberAgentNum);
-    {
-      const ex = document.createElement('div');
-      ex.classList.add('opt-label');
-      ex.style.display = 'inline-block';
-      ex.innerText = '인당 도둑 개수';
-      robberAgentNum.append(ex);
-    }
-    this.robberNumPicker = new NumberPicker(robberAgentNum, 1, 0, 5);
+    // const robberAgentNum = document.createElement('div');
+    // robberAgentNum.classList.add('robber-num');
+    // this.div.append(robberAgentNum);
+    // {
+    //   const ex = document.createElement('div');
+    //   ex.classList.add('opt-label');
+    //   ex.style.display = 'inline-block';
+    //   ex.innerText = '인당 도둑 개수';
+    //   robberAgentNum.append(ex);
+    // }
+    // this.robberNumPicker = new NumberPicker(robberAgentNum, 1, 0, 5);
   }
 
 }

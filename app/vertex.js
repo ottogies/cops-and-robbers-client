@@ -35,6 +35,8 @@ export class Vertex {
         this.edges = [];
         this.edgeMap = new Map();
 
+        this.agents = new Set();
+
         this.div = document.createElement("div");
         this.div.setAttribute("type", "vertex");
         this.div.setAttribute("vertex_id", this.id);
@@ -81,6 +83,21 @@ export class Vertex {
         else {
             this.div.style.background = '';
         }
+    }
+
+    addAgent(agent) {
+        this.agents.add(agent);
+        if (this.agents.size) this.div.classList.add('has-agent');
+    }
+
+    removeAgent(agent) {
+        this.agents.delete(agent);
+        if (!this.agents.size) this.div.classList.remove('has-agent');
+    }
+
+    setTurn(value) {
+        if (value) this.div.classList.add('turn');
+        else this.div.classList.remove('turn');
     }
 
 }

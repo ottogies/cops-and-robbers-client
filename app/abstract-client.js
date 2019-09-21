@@ -66,7 +66,7 @@ export class AbstractClient {
 
 
     /** Room requests **/
-    requestGameStart(roomID) {
+    requestGameStart(roomID, gridX, gridY, noOfCops, noOfRobbers) {
 
     }
 
