@@ -49,4 +49,10 @@ export class NumberPicker {
     this.setValue(this.value);
   }
 
+  setEnabled(value) {
+    if (value) this.div.classList.remove('disabled');
+    else this.div.classList.add('disabled');
+    this.enabled = value;
+  }
+
 }

@@ -81,6 +81,12 @@ export class Agent {
         }
     }
 
+    setFog(value) {
+        if (value) this.div.classList.add('fog');
+        else this.div.classList.remove('fog');
+        this.fog = value;
+    }
+
     remove() {
         this.div.classList.add('vanish');
         // Do animation

@@ -1,3 +1,5 @@
+import { NumberPicker } from './number-picker.js'
+
 export class Lobby {
 
   constructor(client, container) {
@@ -49,9 +51,16 @@ export class Lobby {
   }
 
   createRoom() {
-    const title = prompt('방 제목은 무엇으로 할까요?');
-    const capacity = +prompt('게임 최대 인원은 몇 명 인가요? (2 ~ 4)')
-    this.client.requestRoomCreate(title, capacity);
+    const modal = new Modal();
+    modal.onSubmit = () => {
+      const title = modal.titleInput.value;
+      const capacity = modal.capacityInput.value;
+      this.client.requestRoomCreate(title, capacity);
+      modal.close();
+    }
+    // const title = prompt('방 제목은 무엇으로 할까요?');
+    // const capacity = +prompt('게임 최대 인원은 몇 명 인가요? (2 ~ 4)')
+    // this.client.requestRoomCreate(title, capacity);
   }
 
   dispose() {
@@ -145,6 +154,89 @@ class Room {
   }
   
   dispose() {
+    this.div.remove();
+  }
+
+}
+
+
+
+class Modal {
+
+  constructor() {
+    this.div = document.createElement('div');
+    this.div.classList.add('room-create-modal');
+
+    const background = document.createElement('div');
+    const container = document.createElement('div');
+
+    background.addEventListener('click', () => {
+      this.close();
+    })
+
+    background.classList.add('background');
+    container.classList.add('container');
+
+    this.div.append(background);
+    this.div.append(container);
+
+    const formContainer = document.createElement('div');
+    formContainer.classList.add('form-container');
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('button-container');
+
+    const titleContainer = document.createElement('div');
+    const capacityContainer = document.createElement('div');
+    const aiContainer = document.createElement('div');
+    [titleContainer, capacityContainer, aiContainer].forEach(v => v.classList.add('row'));
+
+    formContainer.append(titleContainer);
+    formContainer.append(capacityContainer);
+    formContainer.append(aiContainer);
+
+    const titleLabel = document.createElement('div');
+    const capacityLabel = document.createElement('div');
+    const aiLabel = document.createElement('div');
+    titleLabel.innerText = '방 제목';
+    capacityLabel.innerText = '방 최대 인원';
+    aiLabel.innerText = '컴퓨터와 대전';
+
+    titleContainer.append(titleLabel);
+    capacityContainer.append(capacityLabel);
+    aiContainer.append(aiLabel);
+
+    this.titleInput = document.createElement('input');
+    this.titleInput.classList.add('title');
+    this.capacityInput = new NumberPicker(capacityContainer, 4, 2, 4);
+    this.aiInput = document.createElement('input');
+    this.aiInput.classList.add('checkbox');
+    this.aiInput.setAttribute('type', 'checkbox');
+
+    this.aiInput.addEventListener('change', e => {
+      this.capacityInput.setEnabled(!this.aiInput.checked);
+    })
+
+    titleContainer.append(this.titleInput);
+    aiContainer.append(this.aiInput);
+
+    const okButton = document.createElement('div');
+    okButton.classList.add('btn');
+    okButton.innerText = '만들기';
+
+    okButton.addEventListener('click', () => {
+      this.onSubmit();
+    })
+
+    buttonContainer.append(okButton);
+
+    container.append(formContainer);
+    container.append(buttonContainer);
+
+    document.body.append(this.div);
+  }
+
+  close() {
     this.div.remove();
   }
 

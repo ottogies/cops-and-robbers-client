@@ -150,6 +150,29 @@ body {
   
 }
 
+.vertex .haze {
+  position: absolute;
+  left: -15%;
+  top: -15%;
+  width: 130%;
+  height: 130%;
+  background-image: url('./res/haze.png');
+  background-size: 100%;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: .3s;
+}
+
+.vertex.fog {
+  background: grey;
+}
+
+.vertex.fog .haze {
+  opacity: 0.7;
+  transform: translateY(0px);
+}
+
 .vertex.has-agent:after {
   content: '';
   position: absolute;
@@ -224,6 +247,10 @@ body {
   border-radius : 1000px; 
   transition: 1s width height;
   pointer-events: none;
+}
+
+.ingame .agent.fog {
+  opacity: 0;
 }
 
 .ingame .section .agent .label {

@@ -5,6 +5,24 @@ export class SideInfo {
     this.div.classList.add('side-info');
     this.game = game;
     parent.append(this.div);
+
+
+
+
+    
+
+    this.turnCountContainer = document.createElement('div');
+    this.turnCountContainer.classList.add('turn-count-container');
+    const playerTurnCountLabel = document.createElement('div');
+    const agentTurnCountLabel = document.createElement('div');
+    playerTurnCountLabel.innerText = '전체 턴';
+    agentTurnCountLabel.innerText = 'Agent 턴';
+    this.turnCountContainer.append(playerTurnCountLabel);
+    this.turnCountContainer.append(agentTurnCountLabel);
+    this.playerTurnCount = document.createElement('div');
+    this.agentTurnCount = document.createElement('div');
+    this.turnCountContainer.append(this.playerTurnCount);
+    this.turnCountContainer.append(this.agentTurnCount);
   }
 
   update() {
@@ -13,7 +31,11 @@ export class SideInfo {
     this.game.players.forEach(player => {
       const uPlayer = new Player(playersContainer, this.game, player);
     })
+    this.div.append(this.turnCountContainer);
     this.div.append(playersContainer);
+
+    this.playerTurnCount.innerText = this.game.playerTurnCount;
+    this.agentTurnCount.innerText = this.game.agentTurnCount;
   }
 
 }
@@ -63,6 +85,12 @@ class Agent {
     label.classList.add('label');
     this.div.append(label);
     label.innerText = 'Agent';
+
+    if (agent.fog) {
+      const fog = document.createElement('div');
+      fog.classList.add('fog');
+      icon.append(fog);
+    }
   }
 
   setTurn(value) {

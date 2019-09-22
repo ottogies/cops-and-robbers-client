@@ -47,7 +47,12 @@ export class Vertex {
 
         container.append(this.div);
         this.div.classList.add('animate');
+
+        this.haze = document.createElement('div');
+        this.haze.classList.add('haze');
+        this.div.append(this.haze);
     
+        this.setFog(false);
     }
 
     addEdge(container, vertex) { 
@@ -87,17 +92,34 @@ export class Vertex {
 
     addAgent(agent) {
         this.agents.add(agent);
-        if (this.agents.size) this.div.classList.add('has-agent');
+        this.update();
     }
 
     removeAgent(agent) {
         this.agents.delete(agent);
-        if (!this.agents.size) this.div.classList.remove('has-agent');
+        this.update();
+    }
+
+    update() {
+        let hasAgent = false;
+        this.agents.forEach(agent => {
+            if (!agent.fog) {
+                hasAgent = true;
+            }
+        })
+        if (hasAgent) this.div.classList.add('has-agent');
+        else this.div.classList.remove('has-agent');
     }
 
     setTurn(value) {
         if (value) this.div.classList.add('turn');
         else this.div.classList.remove('turn');
+    }
+
+    setFog(value) {
+        if (value) this.div.classList.add('fog');
+        else this.div.classList.remove('fog');
+        this.fog = value;
     }
 
 }

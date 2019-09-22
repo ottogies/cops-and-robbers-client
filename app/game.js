@@ -31,6 +31,11 @@ export class Game {
     this.vertices = [];
     this.vertexMap = new Map();
     this.players = [];
+    this.playerTurnCount = 0;
+    this.agentTurnCount = 0;
+
+    this.copVision = 2;
+    this.robberVision = 2;
 
     this.div = document.createElement('div');
     this.div.classList.add('ingame');
@@ -145,7 +150,9 @@ export class Game {
         this.requestPlaceAgent(playerId, numberOfAgents)
       this.sideInfo.update();
     }
-    this.client.onAgentMoveTurn = (playerId, agentId) => {
+    this.client.onAgentMoveTurn = (playerId, agentId, playerTurnCount, agentTurnCount) => {
+      this.playerTurnCount = playerTurnCount;
+      this.agentTurnCount = agentTurnCount;
       this.agentMoveTurn(playerId, agentId);
       this.sideInfo.update();
     }
@@ -275,7 +282,7 @@ export class Game {
     }
     this.currentTurnAgent = agent;
     if (this.currentTurnAgent) this.currentTurnAgent.position.setTurn(true);
-    this.chat.addMessage(`${player.username}님의 차례입니다.`);
+    this.chat.addMessage(`${player.username}님의 차례입니다. (${this.agentTurnCount}번째 턴)`);
     if (this.client.id != playerId) return;
     var requestPromise = player.requestMoveAgent(agentId);
     requestPromise.then(result => {
@@ -284,7 +291,7 @@ export class Game {
   }
 
   createPlayer(id,username,isLocal,type) {
-    const player = new Player(id, username, this);
+    const player = new Player(id, username, type, this);
     this.players.push(player);
   }
 
@@ -325,10 +332,10 @@ export class Game {
   //   }
   // }
 
-   moveAgent(currentVertexId, playerId, agentId,vertexId) {
-     var player = this.getPlayerById(playerId);
-     var vertex = this.getVertexById(vertexId);
-     var agent = this.getAgentById(agentId);
+  moveAgent(currentVertexId, playerId, agentId,vertexId) {
+    var player = this.getPlayerById(playerId);
+    var vertex = this.getVertexById(vertexId);
+    var agent = this.getAgentById(agentId);
     console.log(vertex,agent);
 
     // if(currentvertexId == vertexId){
@@ -339,8 +346,55 @@ export class Game {
     // }
     // else{}
     agent.setPosition(vertex);
+    this.updateVision();
+    this.updateVertices();
+  }
 
-   }
+  updateVision() {
+    const localPlayer = this.getPlayerById(this.client.id);
+
+    let visionSet = new Set();
+    let q = [];
+    this.players.forEach(player => {
+      if (player.role == localPlayer.role) {
+        player.agents.forEach(agent => {
+          q.push({
+            position: agent.position,
+            cost: 0
+          });
+        })
+      }
+    })
+    const visionLimit = (localPlayer.role == 'cop' ? this.copVision : this.robberVision);
+    while (q.length) {
+      const cur = q.shift();
+      if (cur.cost > visionLimit) continue;
+      const position = cur.position;
+      position.edges.forEach(neighbor => {
+        if (visionSet.has(neighbor)) return;
+        visionSet.add(neighbor);
+        q.push({
+          position: neighbor,
+          cost: cur.cost + 1
+        });
+      })
+    }
+
+    this.vertices.forEach(v => {
+      if (visionSet.has(v)) v.setFog(false);
+      else v.setFog(true);
+    });
+    this.players.forEach(player => {
+      player.agents.forEach(agent => {
+        if (visionSet.has(agent.position)) agent.setFog(false);
+        else agent.setFog(true);
+      })
+    })
+  }
+
+  updateVertices() {
+    this.vertices.forEach(v => v.update());
+  }
 
   caughtRobber(playerId, robberId) {
     // var cop = this.getAgentById(copId);

@@ -188,14 +188,14 @@ class OptionPart {
       ex.innerText = '그리드 크기 ';
       gridOption.append(ex);
     }
-    this.gridXPicker = new NumberPicker(gridOption, 5, 3, 10);
+    this.gridXPicker = new NumberPicker(gridOption, 7, 3, 10);
     {
       const ex = document.createElement('div');
       ex.style.display = 'inline-block';
       ex.innerText = ' X ';
       gridOption.append(ex);
     }
-    this.gridYPicker = new NumberPicker(gridOption, 5, 3, 10);
+    this.gridYPicker = new NumberPicker(gridOption, 7, 3, 10);
      
     {
       const _ = document.createElement('div');

@@ -132,7 +132,7 @@ export class Client extends AbstractClient {
                 var player_id = +tokens[1];
                 var username = tokens[2];
                 var islocal = +tokens[3];
-                var jobtype = +tokens[4];
+                var jobtype = tokens[4];
                 this.onCreatePlayer(player_id, username, islocal, jobtype);
             }
             else if(type == "game_role_data"){
@@ -148,7 +148,9 @@ export class Client extends AbstractClient {
             else if(type == "agent_move_turn"){
                 var player_id = +tokens[1];
                 var agent_id = +tokens[2];
-                this.onAgentMoveTurn(player_id,agent_id);
+                var playerTurnCount = +tokens[3];
+                var agentTurnCount = +tokens[4];
+                this.onAgentMoveTurn(player_id,agent_id,playerTurnCount,agentTurnCount);
             }
             else if(type == "agent_move"){
                 var player_id = +tokens[1];

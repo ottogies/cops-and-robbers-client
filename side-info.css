@@ -1,3 +1,19 @@
+.side-info .turn-count-container > div {
+  display: inline-block;
+  width: 50%;
+}
+
+.side-info .turn-count-container > div:nth-child(3) {
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.side-info .turn-count-container > div:nth-child(4) {
+  font-size: 50px;
+  font-weight: bold;
+  color: #b3b3b3;
+}
+
 .side-info .player {
   padding: 5px;
   box-sizing: border-box;
@@ -15,11 +31,22 @@
 }
 
 .side-info .agent .icon {
+  position: relative;
   width: 50px;
   height: 50px;
   border-radius: 100%;
   background-size: 100%;
   border: 2px solid #9a9a9a;
+}
+
+.side-info .agent .icon .fog {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background-image: url(./res/haze.png);
+  background-size: 100%;
 }
 
 .side-info .agent.turn {

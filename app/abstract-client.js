@@ -31,7 +31,7 @@ export class AbstractClient {
         this.onCreateAgent = (playerId, agentId, role, vertexId) => {}
         this.onMoveAgent = (currentVertexId,playerId,agentId, vertexId) => {}
         this.onRequestAgentPlace = (playerId, numberOfAgents) => {}
-        this.onAgentMoveTurn = (playerId, agentId) => {}
+        this.onAgentMoveTurn = (playerId, agentId, playerTurnCount, agentTurnCount) => {}
         this.onAgentCaught = (playerId, agentId) => {}
         this.onGameEnd = (role) => {}
 

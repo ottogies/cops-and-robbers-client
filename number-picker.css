@@ -22,10 +22,18 @@
   box-sizing: border-box;
 }
 
+.number-picker.disabled .np-overlay {
+  visibility: hidden !important;
+}
+
 .number-picker .text {
   position: relative;
   z-index: 10;
   font-size: 18px;
+}
+
+.number-picker.disabled .text {
+  color: #afafaf;
 }
 
 .number-picker:hover .np-overlay {
