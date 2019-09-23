@@ -133,16 +133,20 @@ export class Game {
       this.sideInfo.update();
     }
     this.client.onCreatePlayer = (playerId, username, isLocal, type) => {
-      this.createPlayer(playerId, username, isLocal, type);
+      // this.createPlayer(playerId, username, isLocal, type);
       this.sideInfo.update();
     }
     this.client.onGameMapDataEnd = () => {
       if (this.client.id == this.superPlayerId)
         this.client.requestAgentCreate(this.id);
     }
-    this.client.onGameRoleData = () => {
+    this.client.onGameRoleData = (roles) => {
+      roles.forEach(r => {
+        this.createPlayer(r[0], r[1], this.client.id == r[0], r[2]);
+      })
       if (this.client.id == this.superPlayerId)
         this.client.requestMapData(this.id);
+      this.sideInfo.update();
     }
     this.client.onCreateAgent = (playerId, agentId, role, vertexId) => {
       this.createAgent(playerId, agentId, role, vertexId);        

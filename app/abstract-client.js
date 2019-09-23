@@ -27,7 +27,7 @@ export class AbstractClient {
         this.onCreateEdge = (v1Id, v2Id) => {}
         this.onGameMapDataEnd = () => {}
         this.onCreatePlayer = (playerId, username, isLocal, type) => {}
-        this.onGameRoleData = () => {}
+        this.onGameRoleData = (roles) => {}
         this.onCreateAgent = (playerId, agentId, role, vertexId) => {}
         this.onMoveAgent = (currentVertexId,playerId,agentId, vertexId) => {}
         this.onRequestAgentPlace = (playerId, numberOfAgents) => {}

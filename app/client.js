@@ -136,8 +136,16 @@ export class Client extends AbstractClient {
                 var jobtype = tokens[4];
                 this.onCreatePlayer(player_id, username, islocal, jobtype);
             }
-            else if(type == "game_role_data"){
-                this.onGameRoleData();
+            else if(type == "game_role_data") {
+                var n = +tokens[1];
+                var d = [];
+                for (var i = 0; i < n; i ++) {
+                    var id = +tokens[2 + i * 3];
+                    var nick = tokens[2 + i * 3 + 1];
+                    var role = tokens[2 + i * 3 + 2];
+                    d.push([id, nick, role]);
+                }
+                this.onGameRoleData(d);
             }
             else if(type == "agent_create"){
                 var player_id = +tokens[1];
