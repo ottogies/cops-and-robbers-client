@@ -31,11 +31,11 @@ export class App {
       }
     }
 
-    this.client.onGameStart = (gameID) => {
+    this.client.onGameStart = (gameID,noOfCops,noOfRobbers,superPlayerId) => {
       console.log(this.lobby, this.room);
       if (this.lobby) this.lobby.dispose();
       if (this.room) this.room.dispose();
-      this.game = new Game(this.client, this.div, gameID);
+      this.game = new Game(this.client, this.div, gameID, superPlayerId);
     }
 
     this.client.connect();

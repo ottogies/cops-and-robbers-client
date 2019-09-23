@@ -19,7 +19,7 @@ export class AbstractClient {
         this.onRoomDestroy = (roomID) => {}
 
         /** InGame protocols **/
-        this.onGameStart = (gameID) => {}
+        this.onGameStart = (gameID,noOfCops,noOfRobbers,superPlayerId) => {}
         this.onRoleSelect = (playerID, role) => {}
         this.onCreateGame = (gameId) => {}
         this.onGameMapDataStart = () => {}

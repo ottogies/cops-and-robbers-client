@@ -96,7 +96,8 @@ export class Client extends AbstractClient {
             }
             else if (type == 'game_start') {
                 const gameID = +tokens[1];
-                this.onGameStart(gameID);
+                const superPlayerId = +tokens[4];
+                this.onGameStart(gameID,0,0,superPlayerId);
             }
 
 

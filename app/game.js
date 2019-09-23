@@ -23,7 +23,7 @@ export class Game {
   /** 
    * @param {AbstractClient} client  
    */  
-  constructor(client, container, id) {
+  constructor(client, container, id, superPlayerId) {
     window.game = this;
 
     this.id = id;
@@ -33,6 +33,7 @@ export class Game {
     this.players = [];
     this.playerTurnCount = 0;
     this.agentTurnCount = 0;
+    this.superPlayerId = superPlayerId;
 
     this.copVision = 2;
     this.robberVision = 2;
@@ -136,10 +137,12 @@ export class Game {
       this.sideInfo.update();
     }
     this.client.onGameMapDataEnd = () => {
-      this.client.requestAgentCreate(this.id);
+      if (this.client.id == this.superPlayerId)
+        this.client.requestAgentCreate(this.id);
     }
     this.client.onGameRoleData = () => {
-      this.client.requestMapData(this.id);
+      if (this.client.id == this.superPlayerId)
+        this.client.requestMapData(this.id);
     }
     this.client.onCreateAgent = (playerId, agentId, role, vertexId) => {
       this.createAgent(playerId, agentId, role, vertexId);        
