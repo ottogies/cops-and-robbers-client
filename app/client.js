@@ -278,6 +278,10 @@ export class Client extends AbstractClient {
         this.socket.send(['request_map_data', gameID].join(','));
     }
 
+    requestAgentCreate(gameID) {
+        this.socket.send(['request_agent_create', gameID].join(','));
+    }
+
     requestAgentMove(gameID, agentId, vertexId) {
         this.socket.send(['request_agent_move',gameID,agentId,vertexId].join(','));
     }

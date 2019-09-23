@@ -135,6 +135,9 @@ export class Game {
       this.createPlayer(playerId, username, isLocal, type);
       this.sideInfo.update();
     }
+    this.client.onGameMapDataEnd = () => {
+      this.client.requestAgentCreate(this.id);
+    }
     this.client.onGameRoleData = () => {
       this.client.requestMapData(this.id);
     }

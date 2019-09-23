@@ -80,6 +80,10 @@ export class AbstractClient {
     requestMapData(gameID) {
 
     }
+
+    requestAgentCreate(gameID) {
+
+    }
     
     requestAgentMove(gameID, agentId, vertexId) {
 
